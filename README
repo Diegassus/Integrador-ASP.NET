@@ -1,0 +1,106 @@
+-- phpMyAdmin SQL Dump
+-- version 5.2.0
+-- https://www.phpmyadmin.net/
+--
+-- Servidor: 127.0.0.1
+-- Tiempo de generación: 28-03-2023 a las 20:20:43
+-- Versión del servidor: 10.4.24-MariaDB
+-- Versión de PHP: 8.1.6
+
+SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
+START TRANSACTION;
+SET time_zone = "+00:00";
+
+
+/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
+/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
+/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
+/*!40101 SET NAMES utf8mb4 */;
+
+--
+-- Base de datos: `integradornet`
+--
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `inquilinos`
+--
+
+CREATE TABLE `inquilinos` (
+  `Id` int(11) NOT NULL,
+  `Dni` varchar(30) NOT NULL,
+  `Apellido` varchar(30) NOT NULL,
+  `Nombre` varchar(60) NOT NULL,
+  `Correo` varchar(40) NOT NULL,
+  `Telefono` varchar(50) NOT NULL,
+  `Estado` tinyint(1) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Volcado de datos para la tabla `inquilinos`
+--
+
+INSERT INTO `inquilinos` (`Id`, `Dni`, `Apellido`, `Nombre`, `Correo`, `Telefono`, `Estado`) VALUES
+(1, '874657', 'Argento', 'Pepe', 'test1@gmail.com', '544123', 1),
+(2, '876451', 'Perez', 'Raton', 'test2@gmail.com', '8465132', 1);
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `propietarios`
+--
+
+CREATE TABLE `propietarios` (
+  `Id` int(11) NOT NULL,
+  `Apellido` varchar(30) NOT NULL,
+  `Nombre` varchar(60) NOT NULL,
+  `Dni` varchar(60) NOT NULL,
+  `Telefono` varchar(60) NOT NULL,
+  `Correo` varchar(60) NOT NULL,
+  `Estado` tinyint(1) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Volcado de datos para la tabla `propietarios`
+--
+
+INSERT INTO `propietarios` (`Id`, `Apellido`, `Nombre`, `Dni`, `Telefono`, `Correo`, `Estado`) VALUES
+(1, 'Pietario', 'Elpro', '8746513', '846511', 'test4@gmail.com', 1);
+
+--
+-- Índices para tablas volcadas
+--
+
+--
+-- Indices de la tabla `inquilinos`
+--
+ALTER TABLE `inquilinos`
+  ADD PRIMARY KEY (`Id`);
+
+--
+-- Indices de la tabla `propietarios`
+--
+ALTER TABLE `propietarios`
+  ADD PRIMARY KEY (`Id`);
+
+--
+-- AUTO_INCREMENT de las tablas volcadas
+--
+
+--
+-- AUTO_INCREMENT de la tabla `inquilinos`
+--
+ALTER TABLE `inquilinos`
+  MODIFY `Id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+
+--
+-- AUTO_INCREMENT de la tabla `propietarios`
+--
+ALTER TABLE `propietarios`
+  MODIFY `Id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+COMMIT;
+
+/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
+/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
+/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
