@@ -1,5 +1,7 @@
 using MySql.Data.MySqlClient;
 using Inmobiliaria.Models;
+using System;
+using System.Collections.Generic;
 
 namespace Inmobiliaria.Repositorios;
 

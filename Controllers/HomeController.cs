@@ -1,6 +1,7 @@
 ﻿using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
 using Inmobiliaria.Models;
+using Microsoft.Extensions.Logging;
 
 namespace Inmobiliaria.Controllers;
 

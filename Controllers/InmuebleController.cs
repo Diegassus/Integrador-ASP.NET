@@ -4,15 +4,22 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Inmobiliaria.Repositorios;
 
 namespace Inmobiliaria.Controllers
 {
     public class InmuebleController : Controller
     {
+        private RepositorioInmueble Repo;
+        public InmuebleController(){
+            Repo = new RepositorioInmueble();
+        }
+
         // GET: Inmueble
         public ActionResult Index()
         {
-            return View();
+            var inmuebles = Repo.ObtenerInmuebles();
+            return View(inmuebles);
         }
 
         // GET: Inmueble/Details/5
