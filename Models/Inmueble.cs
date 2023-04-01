@@ -18,7 +18,7 @@ namespace Inmobiliaria.Models
         public int? Ambientes { get ; set ; }
         public bool? Disponible { get ; set ;}
         public string? Direccion { get ; set ; }
-        public double? Precio { get ; set ; }
+        public decimal Precio { get ; set ; }
         public int PropietarioId { get ; set ; }
         [ForeignKey(nameof(PropietarioId))]
         public Propietario Duenio {get ; set ;}
