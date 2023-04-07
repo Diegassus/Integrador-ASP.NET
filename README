@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 28-03-2023 a las 20:20:43
+-- Tiempo de generación: 07-04-2023 a las 15:34:26
 -- Versión del servidor: 10.4.24-MariaDB
 -- Versión de PHP: 8.1.6
 
@@ -20,6 +20,58 @@ SET time_zone = "+00:00";
 --
 -- Base de datos: `integradornet`
 --
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `contratos`
+--
+
+CREATE TABLE `contratos` (
+  `Id` int(11) NOT NULL,
+  `Desde` datetime NOT NULL,
+  `Hasta` datetime NOT NULL,
+  `Estado` tinyint(1) NOT NULL,
+  `Mensualidad` decimal(10,0) NOT NULL,
+  `InmuebleId` int(11) NOT NULL,
+  `InquilinoId` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Volcado de datos para la tabla `contratos`
+--
+
+INSERT INTO `contratos` (`Id`, `Desde`, `Hasta`, `Estado`, `Mensualidad`, `InmuebleId`, `InquilinoId`) VALUES
+(1, '2023-04-07 00:00:00', '2023-04-20 00:00:00', 1, '5000', 1, 2),
+(3, '2023-04-06 15:06:00', '2023-04-28 15:06:00', 1, '3000', 1, 2),
+(4, '2023-04-06 23:30:00', '2023-04-13 23:30:00', 1, '5000', 3, 6);
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `inmuebles`
+--
+
+CREATE TABLE `inmuebles` (
+  `Id` int(11) NOT NULL,
+  `Lat` varchar(255) NOT NULL,
+  `Lng` varchar(255) NOT NULL,
+  `Uso` int(11) NOT NULL,
+  `Tipo` int(11) NOT NULL,
+  `Ambientes` int(11) NOT NULL,
+  `Disponible` tinyint(1) NOT NULL,
+  `Direccion` varchar(100) NOT NULL,
+  `Precio` decimal(10,0) NOT NULL,
+  `PropietarioId` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Volcado de datos para la tabla `inmuebles`
+--
+
+INSERT INTO `inmuebles` (`Id`, `Lat`, `Lng`, `Uso`, `Tipo`, `Ambientes`, `Disponible`, `Direccion`, `Precio`, `PropietarioId`) VALUES
+(1, '73.754', '84.35451', 2, 1, 3, 1, 'Caseros 44', '85000', 1),
+(3, '8465.15', '4.125689', 3, 2, 4, 1, 'Cerro Nube 44', '85000', 1);
 
 -- --------------------------------------------------------
 
@@ -43,7 +95,30 @@ CREATE TABLE `inquilinos` (
 
 INSERT INTO `inquilinos` (`Id`, `Dni`, `Apellido`, `Nombre`, `Correo`, `Telefono`, `Estado`) VALUES
 (1, '874657', 'Argento', 'Pepe', 'test1@gmail.com', '544123', 1),
-(2, '876451', 'Perez', 'Raton', 'test2@gmail.com', '8465132', 1);
+(2, '876451', 'Perez', 'Raton', 'test2@gmail.com', '8465132', 1),
+(6, '789465312', 'Perez', 'Carlos', 'test7@gmail.com', '1348461', 1);
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `pagos`
+--
+
+CREATE TABLE `pagos` (
+  `Id` int(11) NOT NULL,
+  `Nro` int(11) NOT NULL,
+  `Fecha` datetime NOT NULL,
+  `Importe` decimal(10,0) NOT NULL,
+  `ContratoId` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Volcado de datos para la tabla `pagos`
+--
+
+INSERT INTO `pagos` (`Id`, `Nro`, `Fecha`, `Importe`, `ContratoId`) VALUES
+(6, 1, '2023-04-05 05:55:00', '5000', 3),
+(8, 1, '2023-04-06 23:30:00', '5000', 4);
 
 -- --------------------------------------------------------
 
@@ -66,17 +141,41 @@ CREATE TABLE `propietarios` (
 --
 
 INSERT INTO `propietarios` (`Id`, `Apellido`, `Nombre`, `Dni`, `Telefono`, `Correo`, `Estado`) VALUES
-(1, 'Pietario', 'Elpro', '8746513', '846511', 'test4@gmail.com', 1);
+(1, 'Pietario', 'Elpro', '8746513', '846511', 'test4@gmail.com', 1),
+(3, 'Manito', 'Many', '87465312', '24465874', 'test6@gmail.com', 1),
+(4, 'Propietario', 'capo', '21587', '68453132', 'propietario1@gmail.com', 1);
 
 --
 -- Índices para tablas volcadas
 --
 
 --
+-- Indices de la tabla `contratos`
+--
+ALTER TABLE `contratos`
+  ADD PRIMARY KEY (`Id`),
+  ADD KEY `InmuebleId` (`InmuebleId`,`InquilinoId`),
+  ADD KEY `InquilinoId` (`InquilinoId`);
+
+--
+-- Indices de la tabla `inmuebles`
+--
+ALTER TABLE `inmuebles`
+  ADD PRIMARY KEY (`Id`),
+  ADD KEY `PropietarioId` (`PropietarioId`);
+
+--
 -- Indices de la tabla `inquilinos`
 --
 ALTER TABLE `inquilinos`
   ADD PRIMARY KEY (`Id`);
+
+--
+-- Indices de la tabla `pagos`
+--
+ALTER TABLE `pagos`
+  ADD PRIMARY KEY (`Id`),
+  ADD KEY `ContratoId` (`ContratoId`);
 
 --
 -- Indices de la tabla `propietarios`
@@ -89,16 +188,57 @@ ALTER TABLE `propietarios`
 --
 
 --
+-- AUTO_INCREMENT de la tabla `contratos`
+--
+ALTER TABLE `contratos`
+  MODIFY `Id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+
+--
+-- AUTO_INCREMENT de la tabla `inmuebles`
+--
+ALTER TABLE `inmuebles`
+  MODIFY `Id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+
+--
 -- AUTO_INCREMENT de la tabla `inquilinos`
 --
 ALTER TABLE `inquilinos`
-  MODIFY `Id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `Id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+
+--
+-- AUTO_INCREMENT de la tabla `pagos`
+--
+ALTER TABLE `pagos`
+  MODIFY `Id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
 -- AUTO_INCREMENT de la tabla `propietarios`
 --
 ALTER TABLE `propietarios`
-  MODIFY `Id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `Id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+
+--
+-- Restricciones para tablas volcadas
+--
+
+--
+-- Filtros para la tabla `contratos`
+--
+ALTER TABLE `contratos`
+  ADD CONSTRAINT `contratos_ibfk_1` FOREIGN KEY (`InmuebleId`) REFERENCES `inmuebles` (`Id`),
+  ADD CONSTRAINT `contratos_ibfk_2` FOREIGN KEY (`InquilinoId`) REFERENCES `inquilinos` (`Id`);
+
+--
+-- Filtros para la tabla `inmuebles`
+--
+ALTER TABLE `inmuebles`
+  ADD CONSTRAINT `inmuebles_ibfk_1` FOREIGN KEY (`PropietarioId`) REFERENCES `propietarios` (`Id`);
+
+--
+-- Filtros para la tabla `pagos`
+--
+ALTER TABLE `pagos`
+  ADD CONSTRAINT `pagos_ibfk_1` FOREIGN KEY (`ContratoId`) REFERENCES `contratos` (`Id`);
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

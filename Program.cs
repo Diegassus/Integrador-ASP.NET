@@ -32,8 +32,6 @@ app.Run();
 
 /*
 Para la última entrega parcial (antes de la presentación y defensa), se pide:
-
-    Todos los ABM más las vistas de detalles, ya deben estar funcionando (Propietarios, Inquilinos, Inmuebles, Contratos y Pagos).
     
     Debe existir un ABM de Usuarios del sistema. Se debe distinguir entre los roles de administradores y empleados. Solo los administradores pueden gestionar otros usuarios (ABM).
     Todos los ABM deben estar restringidos a usuarios logueados en el sistema. Solo los administradores pueden eliminar.
