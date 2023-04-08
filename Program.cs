@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -6,6 +7,20 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
+builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme).AddCookie(
+  options =>
+  {
+    options.LoginPath = "/Usuarios/login";
+    options.LogoutPath = "/Usuarios/logout";
+    options.AccessDeniedPath = "/Home/Restringido";
+  }  
+);
+
+builder.Services.AddAuthorization(options =>
+{
+    options.AddPolicy("Empleado",policy => policy.RequireRole("Empleado","Administrador"));
+    options.AddPolicy("Administrador",policy => policy.RequireRole("Administrador"));
+});
 
 var app = builder.Build();
 
@@ -22,6 +37,7 @@ app.UseStaticFiles();
 
 app.UseRouting();
 
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllerRoute(
@@ -33,7 +49,8 @@ app.Run();
 /*
 Para la última entrega parcial (antes de la presentación y defensa), se pide:
     
-    Debe existir un ABM de Usuarios del sistema. Se debe distinguir entre los roles de administradores y empleados. Solo los administradores pueden gestionar otros usuarios (ABM).
+    Antes de segur con validaciones, crear un par de usuarios (y preparar todos los metodos del ABM)
+    Se debe distinguir entre los roles de administradores y empleados. Solo los administradores pueden gestionar otros usuarios (ABM).
     Todos los ABM deben estar restringidos a usuarios logueados en el sistema. Solo los administradores pueden eliminar.
     Cada usuario puede modificar su perfil sin modificar el rol. Incluye cambio de avatar y de contraseña.
     Actualizar el menú de navegación y las acciones disponibles de acuerdo al rol del usuario logueado.
