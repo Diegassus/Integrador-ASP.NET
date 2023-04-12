@@ -2,79 +2,109 @@
 
 @{
     ViewData["Title"] = "Edit";
+    var titulo = ViewBag.Titulo;
 }
 
-<h1>Edit</h1>
+<h1>@titulo</h1>
 
-<h4>Usuario</h4>
 <hr />
-<div class="row">
-    <div class="col-md-4">
-        <form asp-action="Edit">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group">
-                <label asp-for="Clave" class="control-label"></label>
-                <input asp-for="Clave" class="form-control" />
-                <span asp-validation-for="Clave" class="text-danger"></span>
+<div class="container">
+    <form asp-action="Edit" enctype="multipart/form-data">
+        <div class="row">
+
+            <div class="col-md-4">
+                <h4>Datos personales</h4>
+                @if(User.IsInRole("Administrador"))
+                {
+                    <div class="form-group mt-3">
+                        <label asp-for="Rol" class="control-label"></label>
+                        <select name="Rol" class="form-control">
+                            @foreach (var item in (IDictionary<int,string>)ViewBag.Roles)
+                            {
+                                @:<option @(item.Key == Model.Rol ? "selected" : "" ) value="@item.Key">@item.Value</option>
+                            }
+                        </select>
+                        <span asp-validation-for="Rol" class="text-danger"></span>
+                    </div>
+                    <div class="form-group mt-3">
+                        <label asp-for="Correo" class="control-label"></label>
+                        <input asp-for="Correo" class="form-control" />
+                        <span asp-validation-for="Correo" class="text-danger"></span>
+                    </div>
+                }
+                <div class="form-group mt-3">
+                    <label asp-for="Apellido" class="control-label"></label>
+                    <input asp-for="Apellido" class="form-control" />
+                    <span asp-validation-for="Apellido" class="text-danger"></span>
+                </div>
+                <div class="form-group mt-3">
+                    <label asp-for="Nombre" class="control-label"></label>
+                    <input asp-for="Nombre" class="form-control" />
+                    <span asp-validation-for="Nombre" class="text-danger"></span>
+                </div>
+                <div class="form-group mt-3">
+                    <label asp-for="Dni" class="control-label"></label>
+                    <input asp-for="Dni" class="form-control" />
+                    <span asp-validation-for="Dni" class="text-danger"></span>
+                </div>
+                <div class="form-group mt-3">
+                    <label asp-for="Telefono" class="control-label"></label>
+                    <input asp-for="Telefono" class="form-control" />
+                    <span asp-validation-for="Telefono" class="text-danger"></span>
+                </div>
             </div>
-            <div class="form-group">
-                <label asp-for="Avatar" class="control-label"></label>
-                <input asp-for="Avatar" class="form-control" />
-                <span asp-validation-for="Avatar" class="text-danger"></span>
+
+            <div class="col-md-4 text-center">
+                <h4>Cambio de imagen</h4>
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <div class="form-group mt-3">
+                    <input asp-for="Id" class="form-control" type="hidden"/>
+                </div>
+                @if(Model.Avatar!=""){
+                    <div class="contFoto">
+                        <img src="@Model.Avatar" alt="Avatar Foto" class="img-thumbnail rounded-circle">
+                    </div>
+                }else{
+                    <p>No hay Avatar</p>
+                }
+                <div class="form-group mt-3">
+                    <input asp-for="AvatarFile" type="file" id="formFile" class="form-control"/>
+                    <span asp-validation-for="Avatar" class="text-danger"></span>
+                </div>
             </div>
-            <div class="form-group">
-                <label asp-for="Rol" class="control-label"></label>
-                <input asp-for="Rol" class="form-control" />
-                <span asp-validation-for="Rol" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="RolNombre" class="control-label"></label>
-                <input asp-for="RolNombre" class="form-control" />
-                <span asp-validation-for="RolNombre" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Id" class="control-label"></label>
-                <input asp-for="Id" class="form-control" />
-                <span asp-validation-for="Id" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Apellido" class="control-label"></label>
-                <input asp-for="Apellido" class="form-control" />
-                <span asp-validation-for="Apellido" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Nombre" class="control-label"></label>
-                <input asp-for="Nombre" class="form-control" />
-                <span asp-validation-for="Nombre" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Dni" class="control-label"></label>
-                <input asp-for="Dni" class="form-control" />
-                <span asp-validation-for="Dni" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Telefono" class="control-label"></label>
-                <input asp-for="Telefono" class="form-control" />
-                <span asp-validation-for="Telefono" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Correo" class="control-label"></label>
-                <input asp-for="Correo" class="form-control" />
-                <span asp-validation-for="Correo" class="text-danger"></span>
-            </div>
-            <div class="form-group form-check">
-                <label class="form-check-label">
-                    <input class="form-check-input" asp-for="Estado" /> @Html.DisplayNameFor(model => model.Estado)
-                </label>
-            </div>
-            <div class="form-group">
-                <input type="submit" value="Save" class="btn btn-primary" />
-            </div>
-        </form>
+
+            <div class="col-md-4">
+                <h4>Cambio de contraseña</h4>
+                <div class="form-group mt-3">
+                    <label for="ClaveVieja" class="control-label">Clave anterior</label>
+                    <input for="ClaveVieja" class="form-control" placeholder="Contraseña Vieja"/>
+                    <span asp-validation-for="Clave" class="text-danger"></span>
+                </div>
+                <div class="form-group mt-3">
+                    <label for="ClaveNueva" class="control-label">Nueva Clave</label>
+                    <input for="ClaveNueva" class="form-control" placeholder="Contraseña Nueva"/>
+                    <span asp-validation-for="Clave" class="text-danger"></span>
+                </div>
+                <div class="form-group mt-3">
+                    <label asp-for="Clave" class="control-label"></label>
+                    <input asp-for="Clave" class="form-control" value="" placeholder="Confirmar contraseña"/>
+                    <span asp-validation-for="Clave" class="text-danger"></span>
+                </div>
+            </div>  
+        </div>
+        <div class="form-group mt-4 text-center">
+            <button type="submit" class="btn btn-primary" >Guardar &nbsp;<i class="fa-solid fa-floppy-disk" style="color: #ffffff;"></i></button>
+        </div>
+    </form>
+    <div>
+        @if(titulo=="Editar"){
+            <a asp-action="Index">Volver al listado</a>
+        }else{
+            <a asp-action="Index" asp-controller="Home">Volver al inicio</a>
+        }
+        
     </div>
 </div>
 
-<div>
-    <a asp-action="Index">Back to List</a>
-</div>
+
 

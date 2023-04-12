@@ -1,11 +1,14 @@
 
 
+using System.ComponentModel.DataAnnotations;
+
 namespace Inmobiliaria.Models;
 
 public class Usuario : Persona {
     public string? Clave { get ; set ; }
     public string? Avatar { get ; set ; }
     public IFormFile AvatarFile { get ; set ; }
+    [Display(Name ="Rol del empleado")]
     public int? Rol { get ; set ; }
     public string RolNombre => Rol > 0 ? ((enRoles)Rol).ToString() : "" ;
 

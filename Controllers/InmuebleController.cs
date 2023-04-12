@@ -6,9 +6,11 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Inmobiliaria.Repositorios;
 using Inmobiliaria.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Inmobiliaria.Controllers
 {
+    [Authorize]
     public class InmuebleController : Controller
     {
         private RepositorioInmueble Repo;
@@ -21,7 +23,10 @@ namespace Inmobiliaria.Controllers
         // GET: Inmueble
         public ActionResult Index()
         {
+            ViewBag.Usos = Inmueble.ObtenerUsos();
+            ViewBag.Tipos = Inmueble.ObtenerTipos();
             var inmuebles = Repo.ObtenerInmuebles();
+
             return View(inmuebles);
         }
 
@@ -29,6 +34,9 @@ namespace Inmobiliaria.Controllers
         public ActionResult Details(int id)
         {
             var res = Repo.ObtenerInmueble(id);
+            res.Duenio = RepoPropietarios.ObtenerPropietario(res.PropietarioId);
+            ViewBag.Usos = Inmueble.ObtenerUsos();
+            ViewBag.Tipos = Inmueble.ObtenerTipos();
             return View(res);
         }
 
@@ -37,8 +45,10 @@ namespace Inmobiliaria.Controllers
         {
             try{
                 ViewData["propietarios"] = RepoPropietarios.ObtenerPropietarios();
+                ViewBag.Usos = Inmueble.ObtenerUsos();
+                ViewBag.Tipos = Inmueble.ObtenerTipos();
                 return View();
-            }catch(Exception e)
+            }catch
             {
                 throw ;
             }
@@ -65,6 +75,9 @@ namespace Inmobiliaria.Controllers
         public ActionResult Edit(int id)
         {
             var res = Repo.ObtenerInmueble(id);
+            ViewData["propietarios"] = RepoPropietarios.ObtenerPropietarios();
+            ViewBag.Usos = Inmueble.ObtenerUsos();
+            ViewBag.Tipos = Inmueble.ObtenerTipos();
             return View(res);
         }
 
@@ -87,15 +100,19 @@ namespace Inmobiliaria.Controllers
         }
 
         // GET: Inmueble/Delete/5
+        [Authorize(Policy="Administrador")]
         public ActionResult Delete(int id)
         {
             var res = Repo.ObtenerInmueble(id);
+            ViewBag.Usos = Inmueble.ObtenerUsos();
+            ViewBag.Tipos = Inmueble.ObtenerTipos();
             return View(res);
         }
 
         // POST: Inmueble/Delete/5
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Policy="Administrador")]
         public ActionResult Delete(int id, Inmueble inmueble)
         {
             try

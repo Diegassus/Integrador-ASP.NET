@@ -2,12 +2,14 @@
 
 @{
     ViewData["Title"] = "Index";
+    IDictionary<int,string> usos = (IDictionary<int,string>) ViewBag.Usos;
+    IDictionary<int,string> tipos = (IDictionary<int,string>) ViewBag.Tipos;
 }
 
-<h1>Index</h1>
+<h1>Listado de propiedades</h1>
 
 <p>
-    <a asp-action="Create">Create New</a>
+    <a asp-action="Create"><i class="fa-solid fa-plus"></i>&nbsp; Crear nuevo</a>
 </p>
 <table class="table">
     <thead>
@@ -43,13 +45,17 @@
                 @Html.DisplayFor(modelItem => item.Id)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Uso)
+                @usos[(int)item.Uso]
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Tipo)
+                @tipos[(int)item.Tipo]
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Disponible)
+                @if((bool)item.Disponible == true){
+                     <p>Disponible</p>
+                }else{
+                    <p>No Disponible</p>
+                }
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Direccion)
@@ -58,12 +64,16 @@
                 @Html.DisplayFor(modelItem => item.Precio)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.PropietarioId)
+                @Html.DisplayFor(modelItem => item.Duenio.Apellido)
+                @Html.DisplayFor(modelItem => item.Duenio.Nombre)
             </td>
             <td>
-                @Html.ActionLink("Edit", "Edit", new { id=item.Id }) |
-                @Html.ActionLink("Details", "Details", new { id=item.Id }) |
-                @Html.ActionLink("Delete", "Delete", new { id=item.Id })
+                <a asp-action="Edit" asp-route-id="@item.Id"><i class="fa-solid fa-pen-to-square" style="color: #25CED1;"></i></a>&nbsp;|
+                <a asp-action="Details" asp-route-id="@item.Id"><i class="fa-solid fa-circle-info" ></i></a>&nbsp;
+                @if(User.IsInRole("Administrador")){
+                    <p style="display:inline-block;">| </p>
+                    <a asp-action="Delete" asp-route-id="@item.Id"><i class="fa-solid fa-trash" style="color: #EA526F;"></i></a>
+                }
             </td>
         </tr>
 }

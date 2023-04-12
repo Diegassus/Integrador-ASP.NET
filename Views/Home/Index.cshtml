@@ -4,5 +4,12 @@
 
 <div class="text-center">
     <h1 class="display-4">Bienvenido a Inmobiliaria NET!</h1>
-    <p>Inicia sesión para navegar por la aplicación</a>.</p>
+    @if(User.Identity.IsAuthenticated)
+    {
+        <p>Ya puedes comenzar a operar!</p>
+    }else
+    {
+        <p>Inicia sesión para navegar por la aplicación.</p>
+    }
+    
 </div>

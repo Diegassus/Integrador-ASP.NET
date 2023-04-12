@@ -6,9 +6,11 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Inmobiliaria.Repositorios;
 using Inmobiliaria.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Inmobiliaria.Controllers
 {
+    [Authorize]
     public class ContratosController : Controller
     {
         RepositorioContrato Repo ;
@@ -24,6 +26,8 @@ namespace Inmobiliaria.Controllers
         public ActionResult Index()
         {
             var res = Repo.ObtenerContratos();
+            ViewBag.Inquilinos = RepoInquilino.ObtenerInquilinos();
+            ViewBag.Inmuebles = RepoInmueble.ObtenerInmuebles();
             return View(res);
         }
 
@@ -85,6 +89,7 @@ namespace Inmobiliaria.Controllers
         }
 
         // GET: Contratos/Delete/5
+        [Authorize(Policy="Administrador")]
         public ActionResult Delete(int id)
         {
             var res = Repo.ObtenerContrato(id);
@@ -94,6 +99,7 @@ namespace Inmobiliaria.Controllers
         // POST: Contratos/Delete/5
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Policy="Administrador")]
         public ActionResult Delete(int id, Contrato contrato)
         {
             try

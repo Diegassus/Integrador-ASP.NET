@@ -10,7 +10,7 @@
 </head>
 <body>
     <header>
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light border-bottom box-shadow mb-3">
+        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light border-bottom box-shadow shadow mb-3">
             <div class="container-fluid">
                 <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">Inmobiliaria</a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
@@ -26,21 +26,33 @@
                     <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
                         <ul class="navbar-nav flex-grow-1">
                             <li class="nav-item">
-                                <a class="nav-link " asp-area="" asp-controller="Inquilino" asp-action="Index">Inquilinos</a>
+                                <a class="nav-link " asp-area="" asp-controller="Inquilino" asp-action="Index"><i class="fa-solid fa-person"></i>&nbsp; Inquilinos</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link " asp-area="" asp-controller="Propietario" asp-action="Index">Propietarios</a>
+                                <a class="nav-link " asp-area="" asp-controller="Propietario" asp-action="Index"><i class="fa-solid fa-address-book"></i>&nbsp; Propietarios</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link " asp-area="" asp-controller="Inmueble" asp-action="Index">Inmuebles</a>
+                                <a class="nav-link " asp-area="" asp-controller="Inmueble" asp-action="Index"><i class="fa-solid fa-building"></i>&nbsp; Inmuebles</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link " asp-area="" asp-controller="Contratos" asp-action="Index">Contratos</a>
+                                <a class="nav-link " asp-area="" asp-controller="Contratos" asp-action="Index"><i class="fa-solid fa-file-signature"></i>&nbsp; Contratos</a>
                             </li>
-                            <li class="nav-item">
-                                <a class="nav-link " asp-area="" asp-controller="Usuario" asp-action="Index">Usuarios</a>
-                            </li>
+                            @if(User.IsInRole("Administrador"))
+                            {
+                                <li class="nav-item">
+                                    <a class="nav-link " asp-area="" asp-controller="Usuario" asp-action="Index"><i class="fa-solid fa-user-tie"></i>&nbsp; Usuarios</a>
+                                </li>
+                            }
                         </ul>
+                        <div class="dropdown">
+                            <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                @User.Identity.Name
+                            </button>
+                            <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                                <li><a class="dropdown-item text-dark" asp-controller="Usuario" asp-action="Perfil"><i class="fa-regular fa-user"></i>&nbsp; Perfil</a></li>
+                                <li><a class="dropdown-item text-dark" asp-controller="Usuario" asp-action="Logout"><i class="fa-sharp fa-solid fa-right-from-bracket"></i>&nbsp; Salir</a></li>
+                            </ul>
+                        </div>
                     </div>
                 }
                 
@@ -48,14 +60,14 @@
         </nav>
     </header>
     <div class="container">
-        <main role="main" class="pb-3" ">
+        <main role="main " class="pb-3 shadow p-3 mb-5 bg-body-tertiary rounded mt-4" >
             @RenderBody()
         </main>
     </div>
 
-    <footer class="border-top footer text-muted">
+    <footer class="border-top footer text-muted" id="footer">
         <div class="container">
-            &copy; 2023 - Inmobiliaria - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+            &copy; 2023 - Inmobiliaria - Diego Martin Diaz
         </div>
     </footer>
     <script src="~/lib/jquery/dist/jquery.min.js"></script>

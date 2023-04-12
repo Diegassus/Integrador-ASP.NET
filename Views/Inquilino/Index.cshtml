@@ -1,13 +1,13 @@
 @model IEnumerable<Inmobiliaria.Models.Inquilino>
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Inquilinos";
 }
 
-<h1>Index</h1>
+<h1>Lista de Inquilinos</h1>
 
 <p>
-    <a asp-action="Create">Create New</a>
+    <a asp-action="Create"><i class="fa-solid fa-plus"></i>&nbsp; Crear nuevo</a>
 </p>
 <table class="table">
     <thead>
@@ -22,7 +22,6 @@
                 @Html.DisplayNameFor(model => model.Nombre)
             </th>
             <th>
-                Actions
             </th>
         </tr>
     </thead>
@@ -39,9 +38,13 @@
                 @Html.DisplayFor(modelItem => item.Nombre)
             </td>
             <td>
-                @Html.ActionLink("Edit", "Edit", new {  id=item.Id  }) |
-                @Html.ActionLink("Details", "Details", new { id=item.Id }) |
-                @Html.ActionLink("Delete", "Delete", new { id=item.Id })
+                <a asp-action="Edit" asp-route-id="@item.Id"><i class="fa-solid fa-user-pen" style="color: #25CED1;"></i></a>&nbsp;|
+                <a asp-action="Details" asp-route-id="@item.Id"><i class="fa-solid fa-circle-info" ></i></a>&nbsp;
+                @if(User.IsInRole("Administrador")){
+                    <p style="display:inline-block;">| </p>
+                    <a asp-action="Delete" asp-route-id="@item.Id"><i class="fa-solid fa-trash" style="color: #EA526F;"></i></a>
+                }
+                
             </td>
         </tr>
 }

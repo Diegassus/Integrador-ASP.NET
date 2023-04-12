@@ -1,8 +1,10 @@
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Inmobiliaria.Models;
 
 public class Contrato {
+    [Display(Name ="Codigo")]
     public int Id { get ; set ; }
     public DateTime Desde { get ; set ; }
     public DateTime Hasta { get ; set ; }

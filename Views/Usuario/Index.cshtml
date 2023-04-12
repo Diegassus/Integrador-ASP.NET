@@ -1,31 +1,23 @@
 @model IEnumerable<Inmobiliaria.Models.Usuario>
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Menu de Usuarios";
 }
 
-<h1>Index</h1>
+<h1>Gestion de usuarios</h1>
 
 <p>
-    <a asp-action="Create">Create New</a>
+    <a asp-action="Create"><i class="fa-solid fa-plus"></i>&nbsp;Crear nuevo</a>
 </p>
-<table class="table">
+<table class="table text-center">
     <thead>
         <tr>
+            <th></th>
             <th>
-                @Html.DisplayNameFor(model => model.Clave)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Avatar)
+                Usuario
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.Rol)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.RolNombre)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Id)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.Apellido)
@@ -33,38 +25,22 @@
             <th>
                 @Html.DisplayNameFor(model => model.Nombre)
             </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Dni)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Telefono)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Correo)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Estado)
-            </th>
             <th></th>
         </tr>
     </thead>
     <tbody>
 @foreach (var item in Model) {
         <tr>
+            <td> @if(item.Avatar!=""){
+                    <img src="@Html.DisplayFor(modelItem => item.Avatar)" alt="Avatar" style="width: 45px; heigh:45px;" class="img-thumbnail rounded-circle"> 
+                }else{
+                    <img src="/Uploads\base.png" alt="Avatar" style="width: 45px; heigh:45px;" class="img-thumbnail rounded-circle">
+                }</td>
             <td>
-                @Html.DisplayFor(modelItem => item.Clave)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Avatar)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Rol)
+                @Html.DisplayFor(modelItem => item.Correo)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.RolNombre)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Id)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Apellido)
@@ -73,21 +49,9 @@
                 @Html.DisplayFor(modelItem => item.Nombre)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Dni)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Telefono)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Correo)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Estado)
-            </td>
-            <td>
-                @Html.ActionLink("Edit", "Edit", new { id = item.Id }) |
-                @Html.ActionLink("Details", "Details", new { id = item.Id }) |
-                @Html.ActionLink("Delete", "Delete", new { id = item.Id })
+                <a asp-action="Edit" asp-route-id="@item.Id"><i class="fa-solid fa-user-pen" style="color: #25CED1;"></i></a>&nbsp;|
+                <a asp-action="Details" asp-route-id="@item.Id"><i class="fa-solid fa-circle-info" ></i></a>&nbsp;|
+                <a asp-action="Delete" asp-route-id="@item.Id"><i class="fa-solid fa-trash" style="color: #EA526F;"></i></a>
             </td>
         </tr>
 }

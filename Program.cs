@@ -12,7 +12,7 @@ builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationSc
   {
     options.LoginPath = "/Usuarios/login";
     options.LogoutPath = "/Usuarios/logout";
-    options.AccessDeniedPath = "/Home/Restringido";
+    options.AccessDeniedPath = "/Home/Privacy";
   }  
 );
 
@@ -49,11 +49,10 @@ app.Run();
 /*
 Para la última entrega parcial (antes de la presentación y defensa), se pide:
     
-    Antes de segur con validaciones, crear un par de usuarios (y preparar todos los metodos del ABM)
-    Se debe distinguir entre los roles de administradores y empleados. Solo los administradores pueden gestionar otros usuarios (ABM).
-    Todos los ABM deben estar restringidos a usuarios logueados en el sistema. Solo los administradores pueden eliminar.
-    Cada usuario puede modificar su perfil sin modificar el rol. Incluye cambio de avatar y de contraseña.
-    Actualizar el menú de navegación y las acciones disponibles de acuerdo al rol del usuario logueado.
+    Actalizacion de claim cuando se modifica un ususario
+    Ocultar opciones de delete para empleados comunes, emprolijar vistas y textos, revisar validaciones de los datos ingresados y cargas optimas a la BD , validar el cambio de contraseña.
+    Notificaciones de error, advetrencia y exito
+    validacion y confirmacion de cambio de contraseña
 
 Tener en cuenta estilos, textos, ortografía y presentación en general.
 

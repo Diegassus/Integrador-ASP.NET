@@ -34,7 +34,7 @@ public class RepositorioUsuario {
             Dni = @dni,
             Telefono = @telefono,
             Correo = @correo,
-            Estado = @estado 
+            Estado = @estado ,
             Clave = @clave,
             Avatar = @avatar,
             Rol = @rol
@@ -47,7 +47,7 @@ public class RepositorioUsuario {
                 command.Parameters.AddWithValue("@dni",p.Dni);
                 command.Parameters.AddWithValue("@telefono",p.Telefono);
                 command.Parameters.AddWithValue("@correo",p.Correo);
-                command.Parameters.AddWithValue("@estado",p.Estado);
+                command.Parameters.AddWithValue("@estado",true);
                 command.Parameters.AddWithValue("@clave",p.Clave);
                 command.Parameters.AddWithValue("@avatar",p.Avatar);
                 command.Parameters.AddWithValue("@rol",p.Rol);
@@ -64,7 +64,8 @@ public class RepositorioUsuario {
         var res = -1 ;
         using(MySqlConnection connection = new MySqlConnection( ConnectionString))
         {
-            var query = @"INSERT INTO usuarios (Apellido,Nombre,Dni,Telefono,Correo,Estado,Clave,Avatar,Rol)
+            var query = @"INSERT INTO usuarios 
+            (Apellido,Nombre,Dni,Telefono,Correo,Estado,Clave,Avatar,Rol)
             VALUES (@apellido, @nombre, @dni, @telefono, @correo, @estado,@clave,@avatar,@rol);
             SELECT LAST_INSERT_ID()"; // devuelve el id insertado
             using( var command = new MySqlCommand(query,connection))
@@ -77,10 +78,16 @@ public class RepositorioUsuario {
                 command.Parameters.AddWithValue("@correo",u.Correo);
                 command.Parameters.AddWithValue("@estado",true);
                 command.Parameters.AddWithValue("@clave",u.Clave);
-                command.Parameters.AddWithValue("@avatar",u.Avatar);
+                if(String.IsNullOrEmpty(u.Avatar))
+                {
+                    command.Parameters.AddWithValue("@avatar","");
+                }else{
+                    command.Parameters.AddWithValue("@avatar",u.Avatar);
+                }
                 command.Parameters.AddWithValue("@rol",u.Rol);
                 connection.Open();
                 res = Convert.ToInt32(command.ExecuteScalar());
+                u.Id = res ;
                 connection.Close();
             }
         }
@@ -92,7 +99,7 @@ public class RepositorioUsuario {
         List<Usuario> res = new List<Usuario>();
         using ( MySqlConnection connection = new MySqlConnection(ConnectionString))
         {
-            var query = @"SELECT Id, Apellido,Nombre,Dni,Telefono,Correo,Estado,Clave,Avatar,Rol FROM usuarios";
+            var query = @"SELECT Id, Apellido,Nombre,Dni,Correo,Avatar,Rol FROM usuarios";
             using( var command = new MySqlCommand( query , connection ))
             {
                 connection.Open();
@@ -105,11 +112,7 @@ public class RepositorioUsuario {
                             Id = reader.GetInt32(nameof(Usuario.Id)),
                             Nombre = reader.GetString(nameof(Usuario.Nombre)),
                             Apellido = reader.GetString(nameof(Usuario.Apellido)),
-                            Dni = reader.GetString(nameof(Usuario.Dni)),
-                            Telefono = reader.GetString(nameof(Usuario.Telefono)),
                             Correo = reader.GetString(nameof(Usuario.Correo)),
-                            Estado = reader.GetBoolean(nameof(Usuario.Estado)),
-                            Clave = reader.GetString(nameof(Usuario.Clave)),
                             Avatar = reader.GetString(nameof(Usuario.Avatar)),
                             Rol = reader.GetInt32(nameof(Usuario.Rol))
                         };
