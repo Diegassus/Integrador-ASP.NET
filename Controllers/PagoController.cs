@@ -77,7 +77,7 @@ namespace Inmobiliaria.Controllers
                 // TODO: Add update logic here
                 p.Id=id;
                 var res = Repo.EditarPago(p);
-                return RedirectToAction("Index", new {id = res});
+                return RedirectToAction("Index", new {id = p.ContratoId}); // arreglar redirect
             }
             catch
             {

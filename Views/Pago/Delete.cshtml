@@ -14,37 +14,37 @@
         <dt class = "col-sm-2">
             @Html.DisplayNameFor(model => model.Id)
         </dt>
-        <dd class = "col-sm-10">
+        <dd class = "col-sm-2">
             @Html.DisplayFor(model => model.Id)
         </dd>
         <dt class = "col-sm-2">
             @Html.DisplayNameFor(model => model.Nro)
         </dt>
-        <dd class = "col-sm-10">
+        <dd class = "col-sm-2">
             @Html.DisplayFor(model => model.Nro)
         </dd>
         <dt class = "col-sm-2">
             @Html.DisplayNameFor(model => model.Fecha)
         </dt>
-        <dd class = "col-sm-10">
+        <dd class = "col-sm-2">
             @Html.DisplayFor(model => model.Fecha)
         </dd>
         <dt class = "col-sm-2">
             @Html.DisplayNameFor(model => model.Importe)
         </dt>
-        <dd class = "col-sm-10">
+        <dd class = "col-sm-2">
             @Html.DisplayFor(model => model.Importe)
         </dd>
         <dt class = "col-sm-2">
             @Html.DisplayNameFor(model => model.ContratoId)
         </dt>
-        <dd class = "col-sm-10">
+        <dd class = "col-sm-2">
             @ViewBag.Contrato
         </dd>
     </dl>
     
     <form asp-action="Delete">
         <input type="submit" value="Delete" class="btn btn-danger" /> |
-        @Html.ActionLink("Index", "Index", new { id = ViewBag.Contrato })
+        @Html.ActionLink("Volver a la lista", "Index", new { id = ViewBag.Contrato })
     </form>
 </div>

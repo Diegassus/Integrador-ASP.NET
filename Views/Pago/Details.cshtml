@@ -13,36 +13,36 @@
         <dt class = "col-sm-2">
             @Html.DisplayNameFor(model => model.Id)
         </dt>
-        <dd class = "col-sm-10">
+        <dd class = "col-sm-2">
             @Html.DisplayFor(model => model.Id)
         </dd>
         <dt class = "col-sm-2">
             @Html.DisplayNameFor(model => model.Nro)
         </dt>
-        <dd class = "col-sm-10">
+        <dd class = "col-sm-2">
             @Html.DisplayFor(model => model.Nro)
         </dd>
         <dt class = "col-sm-2">
             @Html.DisplayNameFor(model => model.Fecha)
         </dt>
-        <dd class = "col-sm-10">
+        <dd class = "col-sm-2">
             @Html.DisplayFor(model => model.Fecha)
         </dd>
         <dt class = "col-sm-2">
             @Html.DisplayNameFor(model => model.Importe)
         </dt>
-        <dd class = "col-sm-10">
+        <dd class = "col-sm-2">
             @Html.DisplayFor(model => model.Importe)
         </dd>
         <dt class = "col-sm-2">
             @Html.DisplayNameFor(model => model.ContratoId)
         </dt>
-        <dd class = "col-sm-10">
+        <dd class = "col-sm-2">
             @Html.DisplayFor(model => model.ContratoId)
         </dd>
     </dl>
 </div>
 <div>
-    @Html.ActionLink("Edit", "Edit", new { id = Model.Id }) |
-    @Html.ActionLink("Index", "Index", new { id = ViewBag.Contrato })
+    <a asp-action="Edit" asp-route-id="@Model.Id"><i class="fa-solid fa-pen-to-square" style="color: #25CED1;"></i></a>&nbsp;|   
+    @Html.ActionLink("Volver a la lista", "Index", new { id = ViewBag.Contrato })
 </div>

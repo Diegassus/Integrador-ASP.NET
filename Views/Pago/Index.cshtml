@@ -4,10 +4,10 @@
     ViewData["Title"] = "Index";
 }
 
-<h1>Index</h1>
+<h1>Pagos asociados</h1>
 
 <p>
-    @Html.ActionLink("Create", "Create", new { id = ViewBag.Contrato })
+    <a asp-action="Create" asp-route-id="@ViewBag.Contrato"><i class="fa-solid fa-plus"></i>&nbsp;Crear nuevo</a>
 </p>
 <table class="table">
     <thead>
@@ -49,11 +49,15 @@
                 @Html.DisplayFor(modelItem => item.ContratoId)
             </td>
             <td>
-                @Html.ActionLink("Edit", "Edit", new { id = item.Id }) |
-                @Html.ActionLink("Details", "Details", new { id = item.Id }) |
-                @Html.ActionLink("Delete", "Delete", new { id = item.Id })
+                <a asp-action="Edit" asp-route-id="@item.Id"><i class="fa-solid fa-pen-to-square" style="color: #25CED1;"></i></a>&nbsp;|
+                <a asp-action="Details" asp-route-id="@item.Id"><i class="fa-solid fa-circle-info" ></i></a>&nbsp;
+                @if(User.IsInRole("Administrador")){
+                    <p style="display:inline-block;">| </p>
+                    <a asp-action="Delete" asp-route-id="@item.Id"><i class="fa-solid fa-trash" style="color: #EA526F;"></i></a>
+                }
             </td>
         </tr>
 }
     </tbody>
 </table>
+@Html.ActionLink("Volver al contrato","Details","Contratos",new {id = ViewBag.Contrato})

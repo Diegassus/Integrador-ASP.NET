@@ -8,9 +8,9 @@
 
 <h4>Pago</h4>
 <hr />
-<div class="row">
-    <div class="col-md-4">
-        <form asp-action="Create">
+<form asp-action="Create">
+    <div class="row">
+        <div class="col-md-4">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
                 <label asp-for="Nro" class="control-label"></label>
@@ -18,26 +18,31 @@
                 <span asp-validation-for="Nro" class="text-danger"></span>
             </div>
             <div class="form-group">
+                <input type="hidden" value="@ViewBag.Contrato" asp-for="ContratoId">
+                <span asp-validation-for="ContratoId" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="form-group">
                 <label asp-for="Fecha" class="control-label"></label>
                 <input asp-for="Fecha" class="form-control" />
                 <span asp-validation-for="Fecha" class="text-danger"></span>
             </div>
+        </div>
+        <div class="col-md-4">
             <div class="form-group">
                 <label asp-for="Importe" class="control-label"></label>
                 <input asp-for="Importe" class="form-control" />
                 <span asp-validation-for="Importe" class="text-danger"></span>
             </div>
-            <div class="form-group">
-                <label asp-for="ContratoId" class="control-label"></label>
-                <input asp-for="ContratoId" class="form-control" value=@ViewBag.Contrato/>
-                <span asp-validation-for="ContratoId" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
-            </div>
-        </form>
+        </div>
     </div>
-</div>
+    <div class="text-center">
+        <div class="form-group">
+                <input type="submit" value="Crear" class="btn btn-primary mt-4" />
+            </div>
+    </div>
+</form>
 
 <div>
     @Html.ActionLink("Index", "Index", new { id = ViewBag.Contrato })

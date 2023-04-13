@@ -67,6 +67,8 @@ namespace Inmobiliaria.Controllers
         public ActionResult Edit(int id)
         {
             var res = Repo.ObtenerContrato(id);
+            ViewBag.Inquilinos = RepoInquilino.ObtenerInquilinos();
+            ViewBag.Inmuebles = RepoInmueble.ObtenerInmuebles();
             return View(res);
         }
 
@@ -93,7 +95,7 @@ namespace Inmobiliaria.Controllers
         public ActionResult Delete(int id)
         {
             var res = Repo.ObtenerContrato(id);
-            return View();
+            return View(res);
         }
 
         // POST: Contratos/Delete/5
