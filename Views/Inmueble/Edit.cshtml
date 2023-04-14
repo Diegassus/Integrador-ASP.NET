@@ -21,7 +21,7 @@
                 <select name="Uso" class="form-control">
                     @foreach (var item in (IDictionary<int,string>)ViewBag.Usos)
                     {
-                        <option value="@item.Key">@item.Value</option>
+                        @:<option value="@item.Key" @(item.Key == Model.Uso ? "selected" : "")>@item.Value</option>
                     }
                 </select>
                 <span asp-validation-for="Uso" class="text-danger"></span>
@@ -31,7 +31,7 @@
                 <select name="Tipo" class="form-control">
                     @foreach (var item in (IDictionary<int,string>)ViewBag.Tipos)
                     {
-                        <option value="@item.Key">@item.Value</option>
+                        @:<option value="@item.Key" @(item.Key == Model.Tipo ? "selected" : "") >@item.Value</option>
                     }
                 </select>
                 <span asp-validation-for="Tipo" class="text-danger"></span>
@@ -78,7 +78,7 @@
             </div>
             <div class="form-group form-check">
                 <label class="form-check-label">
-                    <input class="form-check-input" asp-for="Disponible" /> @Html.DisplayNameFor(model => model.Disponible)
+                    <input class="form-check-input" asp-for="Disponible"/> @Html.DisplayNameFor(model => model.Disponible)
                 </label>
             </div>
         </div>

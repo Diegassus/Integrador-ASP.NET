@@ -48,7 +48,8 @@
             @Html.DisplayNameFor(model => model.InmuebleId)
         </dt>
         <dd class = "col-sm-2">
-            @Html.DisplayFor(model => model.InmuebleId)
+            
+            <p>@Html.DisplayFor(model => model.InmuebleId) | @Html.DisplayFor(model => model.Bien.Direccion)</p>
         </dd>
         <dt class = "col-sm-2">
             @Html.DisplayNameFor(model => model.InquilinoId)

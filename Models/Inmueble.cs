@@ -17,7 +17,7 @@ namespace Inmobiliaria.Models
         public int? Tipo { get ; set ; }
         public int? Ambientes { get ; set ; }
         [Display(Name ="Estado")]
-        public bool? Disponible { get ; set ;}
+        public bool Disponible { get ; set ;}
         public string? Direccion { get ; set ; }
         public decimal Precio { get ; set ; }
         [Display(Name ="Propietario")]
