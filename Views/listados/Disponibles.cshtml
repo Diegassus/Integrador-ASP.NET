@@ -8,24 +8,6 @@
 
 <h3 style="display: inline-block;">Inmuebles</h3>
 
-<a asp-action="Create" style="display: inline-block; margin-left:10px;">
-    <div style="display: flex;">
-        <button class="btn-info" style="padding: 3px 9px; border:none; border-radius:5px 0px 0px 5px; background-color:#5c636a;"><i class="fa-solid fa-plus" style="color: #FFFFFF;"></i></button>
-    <button class="btn-info" style="padding: 3px; border:none; border-radius:0px 5px 5px 0px; margin:0;">
-        <p style="display: inline-block; padding:0px 4px 0px 3px; margin:0;">Crear Nuevo</p>
-    </button>
-    </div>
-</a>
-
-<a asp-controller="Listados" asp-action="Disponibles" style="display: inline-block; margin-left:10px;">
-    <div style="display: flex;">
-        <button class="btn-info" style="padding: 3px 9px; border:none; border-radius:5px 0px 0px 5px; background-color:#5c636a;"><i class="fa-solid fa-check" style="color: #ffffff;"></i></button>
-    <button class="btn-warning" style="padding: 3px; border:none; border-radius:0px 5px 5px 0px; margin:0;">
-        <p style="display: inline-block; padding:0px 4px 0px 3px; margin:0;">Disponibles</p>
-    </button>
-    </div>
-</a>
-
 <div class="container mt-3">
     <div style="width: 100%; margin:auto; background-color:#fff; border-radius: 15px; padding:7px 20px; border:1px solid #5c636a;">
         <div class="thead row" style="border-bottom: 1px solid #000f; padding: 0px 0px 5px 0px">
@@ -65,7 +47,7 @@
                 <div class="col-md-1">
                     @usos[(int)item.Uso]
                 </div>
-                <div class="col-md-1" style="display: flex; justify-content:center; align-content:center;">
+                <div class="col-md-1" style="display: flex; justify-content:center;">
                     @tipos[(int)item.Tipo]
                 </div>
                 <div class="col-md-1" style="display: flex; justify-content:center; align-content:center;">
@@ -101,7 +83,7 @@
                     </div>
                 </div>
                 <div class="col-md-1" style="display: flex; justify-content:center;">
-                    <a asp-controller="Listados" asp-action="Contratos" asp-route-id="@item.Id" class="btn btn-success" style="padding:2px 7px;">Contratos</a>
+                    <a asp-controller="Listados" asp-action="Index" asp-route-id="@item.Id" class="btn btn-success" style="padding:2px 7px;">Contratos</a>
                 </div>
             </div>
         }

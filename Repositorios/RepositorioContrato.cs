@@ -180,5 +180,37 @@ public class RepositorioContrato{
         return res ;
     }
 
+    public List<Contrato> ContratosPropiedad(int id){
+        List<Contrato> res = new List<Contrato>();
+        using(MySqlConnection connection = new MySqlConnection(ConnectionString))
+        {
+            var query = @"SELECT Id, Desde, Hasta, Estado, Mensualidad, InmuebleId, InquilinoId
+            FROM contratos WHERE InmuebleId = @id";
+            using(var command = new MySqlCommand(query,connection))
+            {
+                command.Parameters.AddWithValue("@id",id);
+                connection.Open();
+                using(var reader = command.ExecuteReader())
+                {
+                    while(reader.Read())
+                    {
+                        Contrato contrato = new Contrato
+                        {
+                            Id = reader.GetInt32(nameof(Contrato.Id)),
+                            Desde = reader.GetDateTime(nameof(Contrato.Desde)),
+                            Hasta = reader.GetDateTime(nameof(Contrato.Hasta)),
+                            Estado = reader.GetBoolean(nameof(Contrato.Estado)),
+                            Mensualidad = reader.GetDecimal(nameof(Contrato.Mensualidad)),
+                            InmuebleId = reader.GetInt32(nameof(Contrato.InmuebleId)),
+                            InquilinoId = reader.GetInt32(nameof(Contrato.InquilinoId))
+                        };
+                        res.Add(contrato);
+                    }
+                }
+                connection.Close();
+            }
+        }
+        return res ;
+    }
 
 }

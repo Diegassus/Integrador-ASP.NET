@@ -14,14 +14,16 @@ namespace Inmobiliaria.Controllers
     public class PropietarioController : Controller
     {
         private readonly RepositorioPropietario Repo;
-        // GET: Propietario
         public PropietarioController()
         {
             Repo = new RepositorioPropietario();
         }
+
+        // GET: Propietario
         public ActionResult Index()
         {
             var res = Repo.ObtenerPropietarios();
+            Console.WriteLine(res[0].ToString());
             return View(res);
         }
 

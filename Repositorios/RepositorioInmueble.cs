@@ -142,6 +142,82 @@ public class RepositorioInmueble{
         return res ;
     }
 
+    public List<Inmueble> InmueblesPropietario(int id)
+    {
+        List<Inmueble> res = new List<Inmueble>();
+        using(MySqlConnection connection = new MySqlConnection(ConnectionString))
+        {
+            var query = @"SELECT i.Id, Tipo, Uso, Direccion,Disponible, Precio, PropietarioId ,p.Nombre, p.Apellido FROM Inmuebles i INNER JOIN Propietarios p ON i.PropietarioId = p.Id WHERE PropietarioId = @id";
+            using(var command = new MySqlCommand(query,connection))
+            {
+                command.Parameters.AddWithValue("@id",id);
+                connection.Open();
+                using(var reader = command.ExecuteReader())
+                {
+                    while(reader.Read())
+                    {
+                        Inmueble inmueble = new Inmueble
+                        {
+                            Id = reader.GetInt32(nameof(Inmueble.Id)),
+                            Tipo = reader.GetInt32(nameof(Inmueble.Tipo)),
+                            Uso = reader.GetInt32(nameof(Inmueble.Uso)),
+                            Direccion = reader.GetString(nameof(Inmueble.Direccion)),
+                            Precio = reader.GetDecimal(nameof(Inmueble.Precio)),
+                            Disponible = reader.GetBoolean(nameof(Inmueble.Disponible)),
+                            PropietarioId = reader.GetInt32(nameof(Inmueble.PropietarioId)),
+                            Duenio = new Propietario{
+                                Id = reader.GetInt32(nameof(Inmueble.PropietarioId)),
+                                Nombre = reader.GetString(nameof(Propietario.Nombre)),
+                                Apellido = reader.GetString(nameof(Propietario.Apellido))
+                            }
+                        };
+                        res.Add(inmueble);
+                    }
+                }
+                connection.Close();
+            }
+        }
+        return res ;
+    }
+
+    public List<Inmueble> InmueblesDisponibles()
+    {
+        List<Inmueble> res = new List<Inmueble>();
+        using(MySqlConnection connection = new MySqlConnection(ConnectionString))
+        {
+            var query = @"SELECT i.Id, Tipo, Uso, Direccion,Disponible, Precio, PropietarioId ,p.Nombre, p.Apellido FROM Inmuebles i INNER JOIN Propietarios p ON i.PropietarioId = p.Id WHERE Disponible = @bool";
+            using(var command = new MySqlCommand(query,connection))
+            {
+                command.Parameters.AddWithValue("@bool",true);
+                connection.Open();
+                using(var reader = command.ExecuteReader())
+                {
+                    while(reader.Read())
+                    {
+                        Inmueble inmueble = new Inmueble
+                        {
+                            Id = reader.GetInt32(nameof(Inmueble.Id)),
+                            Tipo = reader.GetInt32(nameof(Inmueble.Tipo)),
+                            Uso = reader.GetInt32(nameof(Inmueble.Uso)),
+                            Direccion = reader.GetString(nameof(Inmueble.Direccion)),
+                            Precio = reader.GetDecimal(nameof(Inmueble.Precio)),
+                            Disponible = reader.GetBoolean(nameof(Inmueble.Disponible)),
+                            PropietarioId = reader.GetInt32(nameof(Inmueble.PropietarioId)),
+                            Duenio = new Propietario{
+                                Id = reader.GetInt32(nameof(Inmueble.PropietarioId)),
+                                Nombre = reader.GetString(nameof(Propietario.Nombre)),
+                                Apellido = reader.GetString(nameof(Propietario.Apellido))
+                            }
+                        };
+                        res.Add(inmueble);
+                    }
+                }
+                connection.Close();
+            }
+        }
+        return res ;
+    }
+
     public List<Inmueble> ObtenerInmuebles()
     {
         List<Inmueble> res = new List<Inmueble>();
