@@ -1,12 +1,27 @@
 @model Inmobiliaria.Models.Inquilino
 
 @{
-    ViewData["Title"] = "Editar Inquilino";
+    ViewData["Title"] = "Inquilino";
 }
 
-<h1>Editar</h1>
+<div>
+    <a asp-action="Index" style="text-decoration: none;"><i class="fa-solid fa-arrow-left"></i> Volver a la lista</a>
+</div>
+<h3>Editar inquilino</h3>
+<hr>
 
-<hr />
+@if(ViewBag.Exito == 1){
+    <div class="alert alert-info alert-dismissible" role="alert">
+       <div>@ViewBag.Mensaje</div>
+       <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+}else if(ViewBag.Exito == 0){
+    <div class="alert alert-danger alert-dismissible" role="alert">
+       <div>@ViewBag.Mensaje</div>
+       <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+}
+
 <form asp-action="Edit">
     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
     <div class="row">
@@ -39,7 +54,7 @@
                 <input asp-for="Correo" class="form-control" />
                 <span asp-validation-for="Correo" class="text-danger"></span>
             </div>
-            <div class="form-group form-check">
+            <div class="form-group form-check" style="margin-top: 30px;">
                 <label class="form-check-label">
                     <input class="form-check-input" asp-for="Estado" /> @Html.DisplayNameFor(model => model.Estado)
                 </label>
@@ -47,11 +62,6 @@
         </div>
     </div>
     <div class="form-group text-center mt-4">
-        <button type="submit" class="btn btn-primary" >Guardar &nbsp;<i class="fa-solid fa-floppy-disk" style="color: #ffffff;"></i></button>
+        <button type="submit" class="btn btn-primary" ><i class="fa-solid fa-floppy-disk" style="color: #ffffff;"></i> Guardar</button>
     </div>
 </form>
-
-<div>
-    <a asp-action="Index">Volver a la lista</a>
-</div>
-

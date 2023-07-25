@@ -48,6 +48,8 @@ app.Run();
 
 /*  Rediseñar las vistas para que esten mas presentables (revisar rutas y contorladores de la carpeta de listados [Vistas] agregarle enlace para ir al detalle del dueño de la propiedad a todas las vistas donde se vea un inmueble)
 
+    validar campos de todos los forms de Inquilinos
+
     [Vista Inmuebles > listar por disponibilidad | listar contratos del inmueble]
     Listar todos los contratos de un inmueble en particular.
 
@@ -59,6 +61,7 @@ app.Run();
     Controlar que no existe super posición de fechas de contratos al crear/editar contratos.
     Permitir renovar contratos. (Crea un contrato nuevo)
     Permitir terminar tempranamente contratos indicando la multa. (mostrar un toast)
+
     Usabilidad para el usuario, como menú de navegación, listados con datos representativos, nombres de campos apropiados, ortografía, accesos directos, notificaciones (resultado de operaciones y errores entre otras), validaciones de datos, etc.
     Rehacer controladores y metodos que esten trabajando deficientemente (Como no hacer join o no usar bien los modelos)
 

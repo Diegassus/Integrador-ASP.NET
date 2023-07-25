@@ -1,13 +1,27 @@
 @model Inmobiliaria.Models.Inquilino
 
 @{
-    ViewData["Title"] = "Crear";
+    ViewData["Title"] = "Inquilinos";
+}
+<div>
+    <a asp-action="Index" style="text-decoration: none;"><i class="fa-solid fa-arrow-left"></i> Volver a la lista</a>
+</div>
+<h1>Agendar</h1>
+<p>Complete el formulario con los datos del inquilino</p>
+
+@if(ViewBag.Exito == 1){
+    <div class="alert alert-info alert-dismissible" role="alert">
+       <div>@ViewBag.Mensaje</div>
+       <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+}else if(ViewBag.Exito == 0){
+    <div class="alert alert-danger alert-dismissible" role="alert">
+       <div>@ViewBag.Mensaje</div>
+       <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
 }
 
-<h1>Create</h1>
-
-<h4>Inquilino</h4>
-<hr />
+<hr>
 <form asp-action="Create">
     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
     <div class="row">
@@ -43,11 +57,9 @@
         </div>
     </div>
     <div class="form-group text-center mt-4">
-        <button type="submit" class="btn btn-primary" >Crear</button>
+        <button type="submit" class="btn btn-primary" style="width: 100px;"><i class="fa-regular fa-circle-down"></i> Crear</button>
     </div>
 </form>
 
-<div>
-    <a asp-action="Index">Volver a la lista</a>
-</div>
+
 

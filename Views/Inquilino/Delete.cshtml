@@ -1,65 +1,50 @@
 @model Inmobiliaria.Models.Inquilino
 
 @{
-    ViewData["Title"] = "Eliminar";
+    ViewData["Title"] = "Inquilino";
 }
 
-<h1>Eliminar</h1>
 
-<h3>Estas seguro de eliminar a este inquilino?</h3>
+
 <div>
-    <hr />
-    <dl class="row">
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Id)
-        </dt>
-        <dd class = "col-sm-2">
-            @Html.DisplayFor(model => model.Id)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Apellido)
-        </dt>
-        <dd class = "col-sm-2">
-            @Html.DisplayFor(model => model.Apellido)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Nombre)
-        </dt>
-        <dd class = "col-sm-2">
-            @Html.DisplayFor(model => model.Nombre)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Dni)
-        </dt>
-        <dd class = "col-sm-2">
-            @Html.DisplayFor(model => model.Dni)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Telefono)
-        </dt>
-        <dd class = "col-sm-2">
-            @Html.DisplayFor(model => model.Telefono)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Correo)
-        </dt>
-        <dd class = "col-sm-2">
-            @Html.DisplayFor(model => model.Correo)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Estado)
-        </dt>
-        <dd class = "col-sm-2">
-            @if(Model.Estado == true){
-                <p>Activo</p>
+    <a asp-action="Index" style="text-decoration: none; padding-right:8px; margin-right: 8px;"><i class="fa-solid fa-arrow-left"></i> Volver a la lista</a>
+</div>
+<h1>@Html.DisplayFor(model => model.Nombre) @Html.DisplayFor(model => model.Apellido)</h1>
+<h5>Inquilino</h5>
+@if(ViewBag.Exito == 0){
+    <div class="alert alert-danger alert-dismissible" role="alert">
+       <div>@ViewBag.Mensaje</div>
+       <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+}
+<div class="container">
+    <hr>
+    <div class="row">
+        <h5 class="col-md-1">@Html.DisplayNameFor(model => model.Id)</h5>
+        <p class="col-md-1">@Html.DisplayFor(model => model.Id)</p>
+        <h5 class="col-md-1">@Html.DisplayNameFor(model => model.Apellido)</h5>
+        <p class="col-md-1">@Html.DisplayFor(model => model.Apellido)</p>
+        <h5 class="col-md-1">@Html.DisplayNameFor(model => model.Nombre)</h5>
+        <p class="col-md-1">@Html.DisplayFor(model => model.Nombre)</p>
+        <h5 class="col-md-1">@Html.DisplayNameFor(model => model.Dni)</h5>
+        <p class="col-md-1">@Html.DisplayFor(model => model.Dni)</p>
+        <h5 class="col-md-1">@Html.DisplayNameFor(model => model.Estado)</h5>
+        @if(Model.Estado == true){
+                <p class="col-md-1">Activo</p>
             }else{
-                <p>Inactivo</p>
+                <p class="col-md-1">Inactivo</p>
             }
-        </dd>
-    </dl>
-    
+    </div>
+    <hr>
+    <div class="row">
+        <h4>Contacto</h4>
+        <h5 class="col-md-1">@Html.DisplayNameFor(model => model.Telefono)</h5>
+        <p class="col-md-3">@Html.DisplayFor(model => model.Telefono)</p>
+        <h5 class="col-md-1">@Html.DisplayNameFor(model => model.Correo)</h5>
+        <p class="col-md-3">@Html.DisplayFor(model => model.Correo)</p>
+    </div>
+    <hr>
     <form asp-action="Delete">
-        <input type="submit" value="Delete" class="btn btn-danger" /> |
-        <a asp-action="Index">Volver a la lista</a>
+        <input type="submit" value="Eliminar" class="btn btn-danger" />
     </form>
 </div>

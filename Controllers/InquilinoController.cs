@@ -14,14 +14,20 @@ namespace Inmobiliaria.Controllers
     public class InquilinoController : Controller
     {
         private readonly RepositorioInquilino Repo;
-        // GET: Inquilino
         public InquilinoController()
         {
             Repo = new RepositorioInquilino();
         }
+
+        // GET: Inquilino
         public ActionResult Index()
         {
             var inquilinos = Repo.ObtenerInquilinos();
+            if(TempData.ContainsKey("Mensaje"))
+            {
+                ViewBag.Exito = 1;
+                ViewBag.Mensaje = TempData["Mensaje"];
+            }
             return View(inquilinos);
         }
 
@@ -45,13 +51,21 @@ namespace Inmobiliaria.Controllers
         {
             try
             {
-                // TODO: Add insert logic here
-                var res = Repo.CrearInquilino(inquilino);
-                return RedirectToAction(nameof(Index));
+                if(ModelState.IsValid)
+                {
+                    ViewBag.Exito = 1;
+                    ViewBag.Mensaje = "Se registro a " + inquilino.Nombre + " " + inquilino.Apellido + " correctamente";
+                    var res = Repo.CrearInquilino(inquilino);
+                    return View();
+                }else{
+                    ViewBag.Exito = 0;
+                    ViewBag.Mensaje = "No se pudo registrar al inquilino";
+                    return View();
+                }
             }
             catch
             {
-                return View();
+                return RedirectToAction(nameof(Index));
             }
         }
 
@@ -69,14 +83,25 @@ namespace Inmobiliaria.Controllers
         {
             try
             {
-                // TODO: Add update logic here
-                inquilino.Id = id ;
-                Repo.EditarInquilino(inquilino);
-                return RedirectToAction(nameof(Index));
+                if(ModelState.IsValid)
+                {
+                    ViewBag.Exito = 1;
+                    ViewBag.Mensaje = "Se actualizó correctamente a " + inquilino.Nombre + " " + inquilino.Apellido;
+                    inquilino.Id = id ;
+                    Repo.EditarInquilino(inquilino);
+                    inquilino = Repo.ObtenerInquilino(id);
+                    return View(inquilino);
+                }else{
+                    ViewBag.Exito = 0;
+                    ViewBag.Mensaje = "No se pudo actualizar al inquilino";
+                    inquilino = Repo.ObtenerInquilino(id);
+                    return View(inquilino);
+                }
+                
             }
             catch
             {
-                throw;
+                return RedirectToAction(nameof(Index));
             }
         }
 
@@ -96,13 +121,15 @@ namespace Inmobiliaria.Controllers
         {
             try
             {
-                // TODO: Add delete logic here
                 var res = Repo.EliminarInquilino(id);
+                TempData["Mensaje"] = "Se elimino correctamente al inquilino";
                 return RedirectToAction(nameof(Index));
             }
-            catch
+            catch(Exception ex)
             {
-                return View();
+                ViewBag.Exito = 0;
+                ViewBag.Mensaje = "No se pudo eliminar al inquilino " + ex;
+                return View(inquilino);
             }
         }
     }
