@@ -48,7 +48,7 @@ app.Run();
 
 /*  Rediseñar las vistas para que esten mas presentables (revisar rutas y contorladores de la carpeta de listados [Vistas] agregarle enlace para ir al detalle del dueño de la propiedad a todas las vistas donde se vea un inmueble)
 
-    validar campos de todos los forms de Inquilinos
+    validar que exista el inquilino /  usuario siempre en cada ruta necesaria y que no se puedan repetir datos que deberin ser unicos
 
     [Vista Inmuebles > listar por disponibilidad | listar contratos del inmueble]
     Listar todos los contratos de un inmueble en particular.
@@ -77,7 +77,7 @@ Entregar:
 /*
 Completado
 
-    [Vista propietario > listar inmuebles de un popietario]
+    [Vista propietario > listar inmuebles de un popietario] Arreglar esto cuando este con los inmuebles
     Listar todos los inmuebles que le correspondan a un propietario.
 
     [Vista Inmuebles > listar por disponibilidad | listar contratos del inmueble]

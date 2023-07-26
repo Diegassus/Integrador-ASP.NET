@@ -23,7 +23,8 @@ namespace Inmobiliaria.Controllers
         public ActionResult Index()
         {
             var res = Repo.ObtenerPropietarios();
-            Console.WriteLine(res[0].ToString());
+            ViewBag.Exito = TempData["Exito"];
+            ViewBag.Mensaje = TempData["Mensaje"];
             return View(res);
         }
 
@@ -31,6 +32,11 @@ namespace Inmobiliaria.Controllers
         public ActionResult Details(int id)
         {
             var propietario = Repo.ObtenerPropietario(id);
+            if(propietario == null){
+                TempData["Exito"] = 0;
+                TempData["Mensaje"] = "No existe el propietario solicitado";
+                return RedirectToAction(nameof(Index));
+            }
             return View(propietario);
         }
 
@@ -47,12 +53,21 @@ namespace Inmobiliaria.Controllers
         {
             try
             {
-                // TODO: Add insert logic here
-                var res = Repo.CrearPropietario(propietario);
-                return RedirectToAction(nameof(Index));
+                if(ModelState.IsValid){
+                    var res = Repo.CrearPropietario(propietario);
+                    ViewBag.Exito = 1;
+                    ViewBag.Mensaje = "Se registro a " + propietario.Nombre + " " + propietario.Apellido + " correctamente";
+                    return View();
+                }else{
+                    ViewBag.Exito = 0;
+                    ViewBag.Mensaje = "No se pudo registrar al inquilino";
+                    return View();
+                }
             }
             catch
             {
+                ViewBag.Exito = 0;
+                ViewBag.Mensaje = "Ya existe un propietario registrado con este correo";
                 return View();
             }
         }
@@ -61,6 +76,11 @@ namespace Inmobiliaria.Controllers
         public ActionResult Edit(int id)
         {
             var propietario = Repo.ObtenerPropietario(id);
+            if(propietario == null){
+                TempData["Exito"] = 0;
+                TempData["Mensaje"] = "No existe el propietario solicitado";
+                return RedirectToAction(nameof(Index));
+            }
             return View(propietario);
         }
 
@@ -71,13 +91,24 @@ namespace Inmobiliaria.Controllers
         {
             try
             {
-                // TODO: Add update logic here
-                propietario.Id = id ;
-                Repo.EditarPropietario(propietario);
-                return RedirectToAction(nameof(Index));
+                if(ModelState.IsValid)
+                {
+                    ViewBag.Exito = 1;
+                    ViewBag.Mensaje = "Se actualizó correctamente a " + propietario.Nombre + " " + propietario.Apellido;
+                    propietario.Id = id ;
+                    Repo.EditarPropietario(propietario);
+                    return View(propietario);
+                }else{
+                    ViewBag.Exito = 0;
+                    ViewBag.Mensaje = "No se pudo actualizar al propietario";
+                    propietario = Repo.ObtenerPropietario(id);
+                    return View(propietario);
+                }
             }
             catch
             {
+                ViewBag.Exito = 0;
+                ViewBag.Mensaje = "Ocurrio un problema al editar el propietario";
                 return View();
             }
         }
@@ -87,6 +118,11 @@ namespace Inmobiliaria.Controllers
         public ActionResult Delete(int id)
         {
             var propietario = Repo.ObtenerPropietario(id);
+            if(propietario == null){
+                TempData["Exito"] = 0;
+                TempData["Mensaje"] = "No existe el propietario solicitado";
+                return RedirectToAction(nameof(Index));
+            }
             return View(propietario);
         }
 
@@ -98,13 +134,24 @@ namespace Inmobiliaria.Controllers
         {
             try
             {
-                // TODO: Add delete logic here
-                Repo.EliminarPropietario(id);
-                return RedirectToAction(nameof(Index));
+                if(ModelState.IsValid)
+                {
+                    TempData["Exito"] = 1;
+                    TempData["Mensaje"] = "Se elimino correctamente el propietario";
+                    Repo.EliminarPropietario(id);
+                    return RedirectToAction(nameof(Index));
+                }else{
+                    ViewBag.Exito = 0;
+                    ViewBag.Mensaje = "No se pudo eliiminar al propietario";
+                    var propietario = Repo.ObtenerPropietario(id);
+                    return View(propietario);
+                }
             }
             catch
             {
-                return View();
+                TempData["Exito"] = 0;
+                TempData["Mensaje"] = "Ocurrio un problema al intentar eliminar el propietario";
+                return RedirectToAction(nameof(Index));
             }
         }
     }

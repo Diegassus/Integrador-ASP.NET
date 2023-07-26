@@ -1,30 +1,45 @@
 @model Inmobiliaria.Models.Propietario
 
 @{
-    ViewData["Title"] = "Crear";
+    ViewData["Title"] = "Propietarios";
 }
 
-<h1>Create</h1>
+<div>
+    <a asp-action="Index" style="text-decoration: none;"><i class="fa-solid fa-arrow-left"></i> Volver a la lista</a>
+</div>
+<h1>Agendar</h1>
+<p>Complete el formulario con los datos del propietario</p>
 
-<h4>Propietario</h4>
-<hr />
+@if(ViewBag.Exito == 1){
+    <div class="alert alert-info alert-dismissible" role="alert">
+       <div>@ViewBag.Mensaje</div>
+       <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+}else if(ViewBag.Exito == 0){
+    <div class="alert alert-danger alert-dismissible" role="alert">
+       <div>@ViewBag.Mensaje</div>
+       <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+}
+
+<hr>
 <form asp-action="Create">
     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
     <div class="row">
         <div class="col-md-6">
             <div class="form-group">
                 <label asp-for="Apellido" class="control-label"></label>
-                <input asp-for="Apellido" class="form-control" />
+                <input asp-for="Apellido" class="form-control" required/>
                 <span asp-validation-for="Apellido" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="Nombre" class="control-label"></label>
-                <input asp-for="Nombre" class="form-control" />
+                <input asp-for="Nombre" class="form-control" required/>
                 <span asp-validation-for="Nombre" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="Dni" class="control-label"></label>
-                <input asp-for="Dni" class="form-control" />
+                <input asp-for="Dni" class="form-control" required/>
                 <span asp-validation-for="Dni" class="text-danger"></span>
             </div>
             
@@ -32,21 +47,18 @@
         <div class="col-md-6">
             <div class="form-group">
                 <label asp-for="Telefono" class="control-label"></label>
-                <input asp-for="Telefono" class="form-control" />
+                <input asp-for="Telefono" class="form-control" required/>
                 <span asp-validation-for="Telefono" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="Correo" class="control-label"></label>
-                <input asp-for="Correo" class="form-control" />
+                <input asp-for="Correo" class="form-control" required/>
                 <span asp-validation-for="Correo" class="text-danger"></span>
             </div>
         </div>
     </div>
     <div class="form-group text-center mt-4">
-        <button type="submit" class="btn btn-primary" >Crear</button>
+        <button type="submit" class="btn btn-primary" style="width: 100px;"><i class="fa-regular fa-circle-down"></i> Crear</button>
     </div>
 </form>
 
-<div>
-    <a asp-action="Index">Volver a la lista</a>
-</div>
