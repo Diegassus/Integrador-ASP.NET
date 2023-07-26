@@ -23,11 +23,8 @@ namespace Inmobiliaria.Controllers
         public ActionResult Index()
         {
             var inquilinos = Repo.ObtenerInquilinos();
-            if(TempData.ContainsKey("Mensaje"))
-            {
-                ViewBag.Exito = 1;
-                ViewBag.Mensaje = TempData["Mensaje"];
-            }
+            ViewBag.Exito = TempData["Exito"];
+            ViewBag.Mensaje = TempData["Mensaje"];
             return View(inquilinos);
         }
 
@@ -35,6 +32,11 @@ namespace Inmobiliaria.Controllers
         public ActionResult Details(int id)
         {
             var inquilino = Repo.ObtenerInquilino(id);
+            if(inquilino == null){
+                TempData["Exito"] = 0;
+                TempData["Mensaje"] = "No existe el inquilino solicitado";
+                return RedirectToAction(nameof(Index));
+            }
             return View(inquilino);
         }
 
@@ -53,9 +55,9 @@ namespace Inmobiliaria.Controllers
             {
                 if(ModelState.IsValid)
                 {
+                    var res = Repo.CrearInquilino(inquilino);
                     ViewBag.Exito = 1;
                     ViewBag.Mensaje = "Se registro a " + inquilino.Nombre + " " + inquilino.Apellido + " correctamente";
-                    var res = Repo.CrearInquilino(inquilino);
                     return View();
                 }else{
                     ViewBag.Exito = 0;
@@ -65,7 +67,9 @@ namespace Inmobiliaria.Controllers
             }
             catch
             {
-                return RedirectToAction(nameof(Index));
+                ViewBag.Exito = 0;
+                ViewBag.Mensaje = "Ya existe un inquilino registrado con este correo";
+                return View();
             }
         }
 
@@ -73,6 +77,11 @@ namespace Inmobiliaria.Controllers
         public ActionResult Edit(int id)
         {
             var inquilino = Repo.ObtenerInquilino(id);
+            if(inquilino == null){
+                TempData["Exito"] = 0;
+                TempData["Mensaje"] = "No existe el inquilino solicitado";
+                return RedirectToAction(nameof(Index));
+            }
             return View(inquilino);
         }
 
@@ -85,11 +94,11 @@ namespace Inmobiliaria.Controllers
             {
                 if(ModelState.IsValid)
                 {
-                    ViewBag.Exito = 1;
-                    ViewBag.Mensaje = "Se actualizó correctamente a " + inquilino.Nombre + " " + inquilino.Apellido;
                     inquilino.Id = id ;
                     Repo.EditarInquilino(inquilino);
                     inquilino = Repo.ObtenerInquilino(id);
+                    ViewBag.Exito = 1;
+                    ViewBag.Mensaje = "Se actualizó correctamente a " + inquilino.Nombre + " " + inquilino.Apellido;
                     return View(inquilino);
                 }else{
                     ViewBag.Exito = 0;
@@ -101,7 +110,9 @@ namespace Inmobiliaria.Controllers
             }
             catch
             {
-                return RedirectToAction(nameof(Index));
+                ViewBag.Exito = 0;
+                ViewBag.Mensaje = "Ocurrio un problema al editar el inquilino";
+                return View();
             }
         }
 
@@ -110,6 +121,11 @@ namespace Inmobiliaria.Controllers
         public ActionResult Delete(int id)
         {
             var inquilino = Repo.ObtenerInquilino(id);
+            if(inquilino == null){
+                TempData["Exito"] = 0;
+                TempData["Mensaje"] = "No existe el inquilino solicitado";
+                return RedirectToAction(nameof(Index));
+            }
             return View(inquilino);
         }
 
@@ -121,15 +137,22 @@ namespace Inmobiliaria.Controllers
         {
             try
             {
-                var res = Repo.EliminarInquilino(id);
-                TempData["Mensaje"] = "Se elimino correctamente al inquilino";
-                return RedirectToAction(nameof(Index));
+                if(ModelState.IsValid){
+                    var res = Repo.EliminarInquilino(id);
+                    TempData["Exito"] = 1;
+                    TempData["Mensaje"] = "Se elimino correctamente al inquilino";
+                    return RedirectToAction(nameof(Index));
+                }else{
+                    ViewBag.Exito = 0;
+                    ViewBag.Mensaje = "No se pudo eliiminar al inquilino";
+                    return View(inquilino);
+                }
             }
-            catch(Exception ex)
+            catch
             {
-                ViewBag.Exito = 0;
-                ViewBag.Mensaje = "No se pudo eliminar al inquilino " + ex;
-                return View(inquilino);
+                TempData["Exito"] = 0;
+                TempData["Mensaje"] = "Ocurrio un problema al intentar eliminar el inquilino";
+                return RedirectToAction(nameof(Index));
             }
         }
     }

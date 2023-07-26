@@ -11,12 +11,14 @@
 </div>
 <h1>@Html.DisplayFor(model => model.Nombre) @Html.DisplayFor(model => model.Apellido)</h1>
 <h5>Inquilino</h5>
+
 @if(ViewBag.Exito == 0){
     <div class="alert alert-danger alert-dismissible" role="alert">
        <div>@ViewBag.Mensaje</div>
        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
     </div>
 }
+
 <div class="container">
     <hr>
     <div class="row">

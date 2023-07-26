@@ -20,17 +20,14 @@
        <div>@ViewBag.Mensaje</div>
        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
     </div>
-}else if(ViewBag.Exito == 2){
-    <div class="alert alert-warning alert-dismissible" role="alert">
-       <div>@ViewBag.Mensaje</div>
-       <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-    </div>
 }else if(ViewBag.Exito == 0){
     <div class="alert alert-danger alert-dismissible" role="alert">
        <div>@ViewBag.Mensaje</div>
        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
     </div>
 }
+
+<hr>
 
 <div class="container mt-3">
     <div style="width: 100%; margin:auto; background-color:#fff; border-radius: 15px; padding:7px 20px; border:1px solid #5c636a;">

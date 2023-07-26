@@ -86,7 +86,7 @@ public int EliminarPropietario(int id)
 
     public Propietario ObtenerPropietario(int id)
     {
-        Propietario? res = null ;
+        Propietario? res = null;
         using(MySqlConnection connection = new MySqlConnection(ConnectionString))
         {
             var query = @"SELECT Id,Nombre,Apellido,Dni,Telefono,Correo,Estado

@@ -93,10 +93,11 @@ namespace Inmobiliaria.Controllers
             {
                 if(ModelState.IsValid)
                 {
-                    ViewBag.Exito = 1;
-                    ViewBag.Mensaje = "Se actualizó correctamente a " + propietario.Nombre + " " + propietario.Apellido;
                     propietario.Id = id ;
                     Repo.EditarPropietario(propietario);
+                    propietario = Repo.ObtenerPropietario(id);
+                    ViewBag.Exito = 1;
+                    ViewBag.Mensaje = "Se actualizó correctamente a " + propietario.Nombre + " " + propietario.Apellido;
                     return View(propietario);
                 }else{
                     ViewBag.Exito = 0;
@@ -136,9 +137,9 @@ namespace Inmobiliaria.Controllers
             {
                 if(ModelState.IsValid)
                 {
+                    Repo.EliminarPropietario(id);
                     TempData["Exito"] = 1;
                     TempData["Mensaje"] = "Se elimino correctamente el propietario";
-                    Repo.EliminarPropietario(id);
                     return RedirectToAction(nameof(Index));
                 }else{
                     ViewBag.Exito = 0;
