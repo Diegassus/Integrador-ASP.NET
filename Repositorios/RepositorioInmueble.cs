@@ -1,5 +1,3 @@
-
-
 using Inmobiliaria.Models;
 using MySql.Data.MySqlClient;
 
@@ -99,8 +97,8 @@ public class RepositorioInmueble{
         using(MySqlConnection connection = new MySqlConnection(ConnectionString))
         {
             var query = @"
-            SELECT i.Id, Lat, Lng, Tipo, Uso, Ambientes, Disponible, Direccion, Precio, PropietarioId, 
-            p.Nombre, p.Apellido, p.Dni, p.Telefono, p.Correo, p.Estado
+            SELECT i.Id, Lat, Lng, Uso, Tipo, Ambientes, Disponible, Direccion, Precio, PropietarioId, 
+            p.Apellido, p.Nombre, p.Dni, p.Telefono, p.Correo, p.Estado
             FROM inmuebles i INNER JOIN propietarios p ON i.PropietarioId = p.Id
             WHERE i.Id = @id";
             using(var command = new MySqlCommand(query,connection))
@@ -127,10 +125,8 @@ public class RepositorioInmueble{
                                 Id = reader.GetInt32(nameof(Inmueble.PropietarioId)),
                                 Nombre = reader.GetString(nameof(Propietario.Nombre)),
                                 Apellido = reader.GetString(nameof(Propietario.Apellido)),
-                                Dni = reader.GetString(nameof(Propietario.Dni)),
                                 Telefono = reader.GetString(nameof(Propietario.Telefono)),
                                 Correo = reader.GetString(nameof(Propietario.Correo)),
-                                Estado = reader.GetBoolean(nameof(Propietario.Estado))
                             }
                             
                         };
@@ -242,7 +238,6 @@ public class RepositorioInmueble{
                             Disponible = reader.GetBoolean(nameof(Inmueble.Disponible)),
                             PropietarioId = reader.GetInt32(nameof(Inmueble.PropietarioId)),
                             Duenio = new Propietario{
-                                Id = reader.GetInt32(nameof(Inmueble.PropietarioId)),
                                 Nombre = reader.GetString(nameof(Propietario.Nombre)),
                                 Apellido = reader.GetString(nameof(Propietario.Apellido))
                             }

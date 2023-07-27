@@ -20,30 +20,30 @@ namespace Inmobiliaria.Models
         public bool Disponible { get ; set ;}
         public string? Direccion { get ; set ; }
         public decimal Precio { get ; set ; }
-        [Display(Name ="Propietario")]
         public int PropietarioId { get ; set ; }
         [ForeignKey(nameof(PropietarioId))]
-        public Propietario Duenio {get ; set ;}
+        [Display(Name ="Propietario")]
+        public Propietario? Duenio {get ; set ;}
 
 
         public static IDictionary<int, string> ObtenerUsos()
         {
-            SortedDictionary<int, string> roles = new SortedDictionary<int, string>();
-            Type tipoEnumRol = typeof(enUso);
-            foreach(var value in Enum.GetValues(tipoEnumRol))
+            SortedDictionary<int, string> usos = new SortedDictionary<int, string>();
+            Type tipoEnumUso = typeof(enUso);
+            foreach(var value in Enum.GetValues(tipoEnumUso))
             {
-                roles.Add((int)value,Enum.GetName(tipoEnumRol,value));
+                usos.Add((int)value,Enum.GetName(tipoEnumUso,value));
             }
-            return roles ;
+            return usos ;
         }
 
         public static IDictionary<int, string> ObtenerTipos()
             {
                 SortedDictionary<int, string> roles = new SortedDictionary<int, string>();
-                Type tipoEnumRol = typeof(enTipo);
-                foreach(var value in Enum.GetValues(tipoEnumRol))
+                Type tipoEnumTipo = typeof(enTipo);
+                foreach(var value in Enum.GetValues(tipoEnumTipo))
                 {
-                    roles.Add((int)value,Enum.GetName(tipoEnumRol,value));
+                    roles.Add((int)value,Enum.GetName(tipoEnumTipo,value));
                 }
                 return roles ;
             }
@@ -57,7 +57,6 @@ public enum enUso
     comercial = 1,
     temporal = 2,
     permanente = 3
-
 }
 
 public enum enTipo

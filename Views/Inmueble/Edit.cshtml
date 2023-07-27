@@ -1,16 +1,28 @@
 @model Inmobiliaria.Models.Inmueble
 
 @{
-    ViewData["Title"] = "Editar";
+    ViewData["Title"] = "Inmueble";
     List<Propietario> lista=  (List<Propietario>)ViewData["propietarios"]; 
     IDictionary<int,string> usos = (IDictionary<int,string>) ViewBag.Usos;
     IDictionary<int,string> tipos = (IDictionary<int,string>) ViewBag.Tipos;
 }
 
-<h1>Edicion</h1>
-
-<h4>Inmueble</h4>
-<hr />
+<div>
+    <a asp-action="Index" style="text-decoration: none;"><i class="fa-solid fa-arrow-left"></i> Volver a la lista</a>
+</div>
+<h3>Editar inmueble</h3>
+@if(ViewBag.Exito == 1){
+    <div class="alert alert-info alert-dismissible" role="alert">
+       <div>@ViewBag.Mensaje</div>
+       <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+}else if(ViewBag.Exito == 0){
+    <div class="alert alert-danger alert-dismissible" role="alert">
+       <div>@ViewBag.Mensaje</div>
+       <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+}
+<hr>
 <form asp-action="Edit">
     <div class="row">
         <div class="col-md-4">
@@ -67,7 +79,7 @@
                 <span asp-validation-for="Precio" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="PropietarioId" class="control-label"></label>
+                <label asp-for="PropietarioId" class="control-label">Propietario</label>
                 <select name="PropietarioId" class="form-control">
                     @foreach (var item in lista)
                     {
@@ -76,7 +88,7 @@
                 </select>
                 <span asp-validation-for="PropietarioId" class="text-danger"></span>
             </div>
-            <div class="form-group form-check">
+            <div class="form-group form-check" style="margin-top: 30px;">
                 <label class="form-check-label">
                     <input class="form-check-input" asp-for="Disponible"/> @Html.DisplayNameFor(model => model.Disponible)
                 </label>
@@ -87,8 +99,3 @@
         <button type="submit" class="btn btn-primary" >Guardar &nbsp;<i class="fa-solid fa-floppy-disk" style="color: #ffffff;"></i></button>
     </div>
 </form>
-
-<div>
-    <a asp-action="Index">Back to List</a>
-</div>
-

@@ -1,8 +1,3 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Inmobiliaria.Repositorios;
 using Inmobiliaria.Models;
@@ -22,11 +17,12 @@ namespace Inmobiliaria.Controllers
 
         // GET: Inmueble
         public ActionResult Index()
-        {
+        { 
+            var inmuebles = Repo.ObtenerInmuebles();
             ViewBag.Usos = Inmueble.ObtenerUsos();
             ViewBag.Tipos = Inmueble.ObtenerTipos();
-            var inmuebles = Repo.ObtenerInmuebles();
-
+            ViewBag.Exito = TempData["Exito"];
+            ViewBag.Mensaje = TempData["Mensaje"];
             return View(inmuebles);
         }
 
@@ -34,7 +30,11 @@ namespace Inmobiliaria.Controllers
         public ActionResult Details(int id)
         {
             var res = Repo.ObtenerInmueble(id);
-            res.Duenio = RepoPropietarios.ObtenerPropietario(res.PropietarioId);
+            if(res == null){
+                TempData["Exito"] = 0;
+                TempData["Mensaje"] = "No existe el inmueble solicitado";
+                return RedirectToAction(nameof(Index));
+            }
             ViewBag.Usos = Inmueble.ObtenerUsos();
             ViewBag.Tipos = Inmueble.ObtenerTipos();
             return View(res);
@@ -61,13 +61,31 @@ namespace Inmobiliaria.Controllers
         {
             try
                 {
-                    // TODO: Add insert logic here
-                    Repo.CrearInmueble(inmueble);
-                    return RedirectToAction(nameof(Index));
+                    if(ModelState.IsValid){
+                        Repo.CrearInmueble(inmueble);
+                        ViewBag.Exito = 1;
+                        ViewBag.Mensaje = "Se registro correctamente el inmueble";
+                        ViewData["propietarios"] = RepoPropietarios.ObtenerPropietarios();
+                        ViewBag.Usos = Inmueble.ObtenerUsos();
+                        ViewBag.Tipos = Inmueble.ObtenerTipos();
+                        return View();
+                    }else{
+                        ViewBag.Exito = 0;
+                        ViewBag.Mensaje = "No se pudo registrar el inmueble";
+                        ViewData["propietarios"] = RepoPropietarios.ObtenerPropietarios();
+                        ViewBag.Usos = Inmueble.ObtenerUsos();
+                        ViewBag.Tipos = Inmueble.ObtenerTipos();
+                        return View();
+                    }
                 }
-                catch(Exception e)
+                catch
                 {
-                    throw e ;
+                    ViewBag.Exito = 0;
+                    ViewBag.Mensaje = "Ya existe un inmueble declarado en esa direccion";
+                    ViewData["propietarios"] = RepoPropietarios.ObtenerPropietarios();
+                    ViewBag.Usos = Inmueble.ObtenerUsos();
+                    ViewBag.Tipos = Inmueble.ObtenerTipos();
+                    return View();
                 }
         }
 
@@ -75,6 +93,11 @@ namespace Inmobiliaria.Controllers
         public ActionResult Edit(int id)
         {
             var res = Repo.ObtenerInmueble(id);
+            if(res == null){
+                TempData["Exito"] = 0;
+                TempData["Mensaje"] = "No existe el inmueble solicitado";
+                return RedirectToAction(nameof(Index));
+            }
             ViewData["propietarios"] = RepoPropietarios.ObtenerPropietarios();
             ViewBag.Usos = Inmueble.ObtenerUsos();
             ViewBag.Tipos = Inmueble.ObtenerTipos();
@@ -84,17 +107,35 @@ namespace Inmobiliaria.Controllers
         // POST: Inmueble/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit(int id, Inmueble i)
+        public ActionResult Edit(int id, Inmueble inmueble)
         {
             try
             {
-                // TODO: Add update logic here
-                i.Id = id ;
-                Repo.EditarInmueble(i);
-                return RedirectToAction(nameof(Index));
+                if(ModelState.IsValid){
+                    inmueble.Id = id ;
+                    Repo.EditarInmueble(inmueble);
+                    inmueble = Repo.ObtenerInmueble(id);
+                    ViewBag.Exito = 1;
+                    ViewBag.Mensaje = "Se edito correctamente el inmueble";
+                    ViewData["propietarios"] = RepoPropietarios.ObtenerPropietarios();
+                    ViewBag.Usos = Inmueble.ObtenerUsos();
+                    ViewBag.Tipos = Inmueble.ObtenerTipos();
+                }else{
+                    ViewBag.Exito = 0;
+                    ViewBag.Mensaje = "No se pudo editar el inmueble";
+                    ViewData["propietarios"] = RepoPropietarios.ObtenerPropietarios();
+                    ViewBag.Usos = Inmueble.ObtenerUsos();
+                    ViewBag.Tipos = Inmueble.ObtenerTipos();
+                }
+                return View(inmueble);
             }
             catch
             {
+                ViewBag.Exito = 0;
+                ViewBag.Mensaje = "Ocurrio un problema el intentar editar el inmueble";
+                ViewData["propietarios"] = RepoPropietarios.ObtenerPropietarios();
+                ViewBag.Usos = Inmueble.ObtenerUsos();
+                ViewBag.Tipos = Inmueble.ObtenerTipos();
                 return View();
             }
         }
@@ -104,6 +145,11 @@ namespace Inmobiliaria.Controllers
         public ActionResult Delete(int id)
         {
             var res = Repo.ObtenerInmueble(id);
+            if(res == null){
+                TempData["Exito"] = 0;
+                TempData["Mensaje"] = "No existe el inmueble solicitado";
+                return RedirectToAction(nameof(Index));
+            }
             ViewBag.Usos = Inmueble.ObtenerUsos();
             ViewBag.Tipos = Inmueble.ObtenerTipos();
             return View(res);
@@ -117,14 +163,54 @@ namespace Inmobiliaria.Controllers
         {
             try
             {
-                // TODO: Add delete logic here
-                Repo.EliminarInmueble(id);
-                return RedirectToAction(nameof(Index));
+                if(ModelState.IsValid){
+                    Repo.EliminarInmueble(id);
+                    TempData["Exito"] = 1;
+                    TempData["Mensaje"] = "Se elimino correctamente el inmueble";
+                    return RedirectToAction(nameof(Index));
+                }else{
+                    ViewBag.Exito = 0;
+                    ViewBag.Mensaje = "No se pudo eliminar el inmueble";
+                    ViewBag.Usos = Inmueble.ObtenerUsos();
+                    ViewBag.Tipos = Inmueble.ObtenerTipos();
+                    return View(inmueble);
+                }
             }
             catch
             {
-                return View();
+                TempData["Exito"] = 0;
+                TempData["Mensaje"] = "No se pudo eliminar el inmueble";
+                return RedirectToAction(nameof(Index));
             }
+        }
+
+        // GET: Inmuebles disponibles
+        public ActionResult Disponibles()
+        {
+            var inmuebles = Repo.InmueblesDisponibles();
+            ViewBag.Usos = Inmueble.ObtenerUsos();
+            ViewBag.Tipos = Inmueble.ObtenerTipos();
+            return View(inmuebles);
+        }
+
+        // GET: Inmuebles de un propietario
+        public ActionResult Pertenecen(int id){
+            var inmuebles = Repo.InmueblesPropietario(id);
+            if(inmuebles == null){
+                TempData["Exito"] = 0;
+                TempData["Mensaje"] = "No existen inmuebles de este propietario";
+                return RedirectToAction(nameof(Index), nameof(PropietarioController));
+            }
+            ViewBag.Usos = Inmueble.ObtenerUsos();
+            ViewBag.Tipos = Inmueble.ObtenerTipos();
+            var propietario = RepoPropietarios.ObtenerPropietario(id);
+            if(propietario == null){
+                TempData["Exito"] = 0;
+                TempData["Mensaje"] = "No existe el propietario seleccionado";
+                return RedirectToAction(nameof(Index), nameof(PropietarioController));
+            }
+            ViewBag.Propietario = propietario.Nombre + " " + propietario.Apellido;
+            return View(inmuebles);
         }
     }
 }

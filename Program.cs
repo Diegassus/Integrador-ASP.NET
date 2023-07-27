@@ -1,7 +1,4 @@
 using Microsoft.AspNetCore.Authentication.Cookies;
-using Microsoft.AspNetCore.Builder;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -55,7 +52,8 @@ app.Run();
 
     [Vista Contrato > listar por fechas]
     Listar todos los contratos de alquiler que se encuentren vigentes (por fechas desde/hasta).
-    [Vista crear contrato]
+
+    [Vista crear contrato (rediseño y reestructurar)]
     Dadas dos fechas posibles de un contrato (inicio y fin), listar todos los inmuebles que no estén ocupados en algún contrato entre esas fechas.
 
     Controlar que no existe super posición de fechas de contratos al crear/editar contratos.
@@ -77,7 +75,7 @@ Entregar:
 /*
 Completado
 
-    [Vista propietario > listar inmuebles de un popietario] Arreglar esto cuando este con los inmuebles
+    [Vista propietario > listar inmuebles de un popietario]
     Listar todos los inmuebles que le correspondan a un propietario.
 
     [Vista Inmuebles > listar por disponibilidad | listar contratos del inmueble]

@@ -4,13 +4,20 @@
     ViewData["Title"] = "Inmuebles";
     IDictionary<int,string> usos = (IDictionary<int,string>) ViewBag.Usos;
     IDictionary<int,string> tipos = (IDictionary<int,string>) ViewBag.Tipos;
+    String propietario = (String) ViewBag.Propietario;
 }
 
-<h3 style="display: inline-block;">Inmuebles</h3>
+<div>
+    <a asp-controller="Propietario" asp-action="Index" style="text-decoration: none;"><i class="fa-solid fa-arrow-left"></i> Volver a la lista</a>
+</div>
+
+<h3 style="display: inline-block;">Inmuebles de @propietario</h3>
+
+<hr>
 
 <div class="container mt-3">
     <div style="width: 100%; margin:auto; background-color:#fff; border-radius: 15px; padding:7px 20px; border:1px solid #5c636a;">
-        <div class="thead row" style="border-bottom: 1px solid #000f; padding: 0px 0px 5px 0px">
+        <div class="thead row" style="border-bottom: 1px solid #000f; padding: 0px 0px 5px 0px; display: flex; justify-content:center;">
             <div class="col-md-1">
                 @Html.DisplayNameFor(model => model.Id)
             </div>
@@ -29,9 +36,6 @@
             <div class="col-md-1">
                 @Html.DisplayNameFor(model => model.Precio)
             </div>
-            <div class="col-md-2">
-                @Html.DisplayNameFor(model => model.PropietarioId)
-            </div>
             <div class="col-md-2" style="display: flex; justify-content:center;">
                 <p style="display: inline-block; margin:0;">Operaciones</p>
             </div>
@@ -47,14 +51,14 @@
                 <div class="col-md-1">
                     @usos[(int)item.Uso]
                 </div>
-                <div class="col-md-1" style="display: flex; justify-content:center;">
+                <div class="col-md-1" style="display: flex; justify-content:center; align-content:center;">
                     @tipos[(int)item.Tipo]
                 </div>
-                <div class="col-md-1">
+                <div class="col-md-1" style="display: flex; justify-content:center; align-content:center;">
                 @if((bool)item.Disponible == true){
-                     <p>Disponible</p>
+                    <i class="fa-solid fa-circle" style="color: #00ff00;"></i>
                 }else{
-                    <p>No Disponible</p>
+                    <i class="fa-solid fa-circle" style="color: #ff0000;"></i>
                 }
             </div>
             <div class="col-md-2">
@@ -62,10 +66,6 @@
             </div>
             <div class="col-md-1">
                 @Html.DisplayFor(modelItem => item.Precio)
-            </div>
-            <div class="col-md-2">
-                @Html.DisplayFor(modelItem => item.Duenio.Apellido)
-                @Html.DisplayFor(modelItem => item.Duenio.Nombre)
             </div>
                 <div class="col-md-2" style="display: flex; justify-content:center;">
                     <div style="display: flex; justify-content:space-around; width:100%;">
@@ -83,7 +83,7 @@
                     </div>
                 </div>
                 <div class="col-md-1" style="display: flex; justify-content:center;">
-                    <a asp-controller="Listados" asp-action="Index" asp-route-id="@item.Id" class="btn btn-success" style="padding:2px 7px;">Contratos</a>
+                    <a asp-controller="Listados" asp-action="Contratos" asp-route-id="@item.Id" class="btn btn-success" style="padding:2px 7px;">Contratos</a>
                 </div>
             </div>
         }
