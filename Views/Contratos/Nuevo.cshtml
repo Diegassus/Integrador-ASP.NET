@@ -1,15 +1,38 @@
 @model Inmobiliaria.Models.Contrato
 
 @{
-    ViewData["Title"] = "Editar";
-    IList<Inmueble> inmuebles = (IList<Inmueble>) ViewBag.Inmuebles;
-    IList<Inquilino> inquilinos = (IList<Inquilino>) ViewBag.Inquilinos;
+    ViewData["Title"] = "Contrato";
+    var listaInquilinos = (List<Inquilino>)ViewBag.Inquilinos;
+    var listaInmuebles = (List<Inmueble>)ViewBag.Inmuebles;
 }
 
 <div>
     <a asp-action="Index" style="text-decoration: none;"><i class="fa-solid fa-arrow-left"></i> Volver a la lista</a>
 </div>
-<h3>Editar inmueble</h3>
+<h1>Registrar contrato</h1>
+<p>Seleccione las fechas de vigencia del contrato</p>
+@* <form asp-action="Nuevo" style="display: inline-block; margin-left:10px;">
+    <div style="display: inline-block; margin-left:10px;">
+        <div style="display: flex;">
+            <div style="padding: 3px 9px; border:none; border-radius:5px 0px 0px 5px; background-color:#5c636a;">
+                <p style="margin: 0; padding:0; color:#fff;">Desde</p>
+            </div>
+            <input type="datetime-local" name="Desde" id="desde">
+        </div>
+    </div>
+
+    <div style="display: inline-block; margin-left:10px;">
+        <div style="display: flex;">
+            <div style="padding: 3px 9px; border:none; border-radius:5px 0px 0px 5px; background-color:#5c636a;">
+                <p style="margin: 0; padding:0; color:#fff;">Hasta</p>
+            </div>
+            <input type="datetime-local" name="Hasta" id="hasta">
+        </div>
+    </div>
+
+    <input type="submit" value="Buscar" class="btn btn-info" />
+
+</form> *@
 
 @if(ViewBag.Exito == 1){
     <div class="alert alert-info alert-dismissible" role="alert">
@@ -23,20 +46,19 @@
     </div>
 }
 
-<hr />
-<form asp-action="Edit">
+<hr>
+<form asp-action="Create">
     <div class="row">
         <div class="col-md-4">
-        
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
                 <label asp-for="Desde" class="control-label"></label>
-                <input asp-for="Desde" class="form-control" />
+                <input asp-for="Desde" type="datetime-local" class="form-control" value="@ViewBag.Desde"/>
                 <span asp-validation-for="Desde" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="Hasta" class="control-label"></label>
-                <input asp-for="Hasta" class="form-control" />
+                <input asp-for="Hasta" type="datetime-local" class="form-control" value="@ViewBag.Hasta"/>
                 <span asp-validation-for="Hasta" class="text-danger"></span>
             </div>
             
@@ -47,38 +69,31 @@
                 <input asp-for="Mensualidad" class="form-control" />
                 <span asp-validation-for="Mensualidad" class="text-danger"></span>
             </div>
-            <div class="form-group form-check mt-4">
-                <label class="form-check-label">
-                    <input class="form-check-input" asp-for="Estado" /> @Html.DisplayNameFor(model => model.Estado)
-                </label>
-            </div>
         </div>
         <div class="col-md-4">
-            
             <div class="form-group">
                 <label asp-for="InmuebleId" class="control-label"></label>
-                <select name="InmuebleId" class="form-control">
-                    @foreach (var item in inmuebles)
+                <select asp-for="InmuebleId" class="form-control">
+                    @foreach (var item in listaInmuebles)
                     {
-                        @:<option @(item.Id == Model.Id ? "selected" : "" ) value="@item.Id">@item.Id | @item.Direccion</option>
+                        <option value="@item.Id">@item.Id | @item.Direccion</option>
                     }
                 </select>
                 <span asp-validation-for="InmuebleId" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="InquilinoId" class="control-label"></label>
-                <select name="InquilinoId" class="form-control">
-                    @foreach (var item in inquilinos)
+                <label class="control-label" asp-for="InquilinoId"></label>
+                <select asp-for="InquilinoId" class="form-control">
+                    @foreach (var item in listaInquilinos)
                     {
-                        @:<option @(item.Id == Model.Id ? "selected" : "" ) value="@item.Id">@item.Apellido @item.Nombre</option>
+                        <option value="@item.Id">@item.ToString()</option>
                     }
                 </select>
                 <span asp-validation-for="InquilinoId" class="text-danger"></span>
-            </div>        
+            </div>
         </div>
-        
-        <div class="form-group text-center mt-4">
-            <button type="submit" class="btn btn-primary" >Guardar &nbsp;<i class="fa-solid fa-floppy-disk" style="color: #ffffff;"></i></button>
-        </div>
+    </div>
+    <div class="form-group text-center">
+        <input type="submit" value="Crear" class="btn btn-primary" />
     </div>
 </form>

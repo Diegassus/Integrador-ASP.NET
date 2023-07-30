@@ -10,12 +10,12 @@ public class Contrato {
     public DateTime Hasta { get ; set ; }
     public bool Estado { get ; set ; }
     public decimal Mensualidad { get ; set ; }
-    [Display(Name ="Codigo de inmueble")]
     public int InmuebleId { get ; set ; }
     [ForeignKey(nameof(Inmueble.Id))]
-    public Inmueble Bien { get ; set ;}
-    [Display(Name ="Inquilino")]
+    [Display(Name ="Inmueble")]
+    public Inmueble? Bien { get ; set ;}
     public int InquilinoId { get ; set ; }
     [ForeignKey(nameof(Inquilino.Id))]
-    public Inquilino Arrendatario { get ; set ; }
+    [Display(Name ="Inquilino")]
+    public Inquilino? Arrendatario { get ; set ; }
 }

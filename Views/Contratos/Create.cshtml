@@ -1,67 +1,47 @@
 @model Inmobiliaria.Models.Contrato
 
 @{
-    ViewData["Title"] = "Crear";
-    var listaInquilinos = (List<Inquilino>)ViewBag.Inquilinos;
-    var listaInmuebles = (List<Inmueble>)ViewBag.Inmuebles;
+    ViewData["Title"] = "Contrato";
 }
 
-<h1>Create</h1>
+<div>
+    <a asp-action="Index" style="text-decoration: none;"><i class="fa-solid fa-arrow-left"></i> Volver a la lista</a>
+</div>
+<h1>Registrar contrato</h1>
+<p>Seleccione las fechas de vigencia del contrato</p>
+<form asp-action="Nuevo" style="display: inline-block; margin-left:10px;">
+    <div style="display: inline-block; margin-left:10px;">
+        <div style="display: flex;">
+            <div style="padding: 3px 9px; border:none; border-radius:5px 0px 0px 5px; background-color:#5c636a;">
+                <p style="margin: 0; padding:0; color:#fff;">Desde</p>
+            </div>
+            <input type="datetime-local" name="Desde" id="desde">
+        </div>
+    </div>
 
-<h4>Contrato</h4>
-<hr />
-<form asp-action="Create">
-    <div class="row">
-        <div class="col-md-4">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group">
-                <label asp-for="Desde" class="control-label"></label>
-                <input asp-for="Desde" class="form-control" />
-                <span asp-validation-for="Desde" class="text-danger"></span>
+    <div style="display: inline-block; margin-left:10px;">
+        <div style="display: flex;">
+            <div style="padding: 3px 9px; border:none; border-radius:5px 0px 0px 5px; background-color:#5c636a;">
+                <p style="margin: 0; padding:0; color:#fff;">Hasta</p>
             </div>
-            <div class="form-group">
-                <label asp-for="Hasta" class="control-label"></label>
-                <input asp-for="Hasta" class="form-control" />
-                <span asp-validation-for="Hasta" class="text-danger"></span>
-            </div>
-            
-        </div>
-        <div class="col-md-4">
-            <div class="form-group">
-                <label asp-for="Mensualidad" class="control-label"></label>
-                <input asp-for="Mensualidad" class="form-control" />
-                <span asp-validation-for="Mensualidad" class="text-danger"></span>
-            </div>
-        </div>
-        <div class="col-md-4">
-            <div class="form-group">
-                <label asp-for="InmuebleId" class="control-label"></label>
-                <select name="InmuebleId" class="form-control">
-                    @foreach (var item in listaInmuebles)
-                    {
-                        <option value="@item.Id">@item.Id | @item.Direccion</option>
-                    }
-                </select>
-                <span asp-validation-for="InmuebleId" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label class="control-label" asp-for="InquilinoId"></label>
-                <select name="InquilinoId" class="form-control">
-                    @foreach (var item in listaInquilinos)
-                    {
-                        <option value="@item.Id">@item.ToString()</option>
-                    }
-                </select>
-                <span asp-validation-for="InquilinoId" class="text-danger"></span>
-            </div>
+            <input type="datetime-local" name="Hasta" id="hasta">
         </div>
     </div>
-    <div class="form-group text-center">
-        <input type="submit" value="Crear" class="btn btn-primary" />
-    </div>
+
+    <input type="submit" value="Buscar" class="btn btn-info" />
+
 </form>
 
-<div>
-    <a asp-action="Index">Back to List</a>
-</div>
+@if(ViewBag.Exito == 1){
+    <div class="alert alert-info alert-dismissible" role="alert">
+       <div>@ViewBag.Mensaje</div>
+       <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+}else if(ViewBag.Exito == 0){
+    <div class="alert alert-danger alert-dismissible" role="alert">
+       <div>@ViewBag.Mensaje</div>
+       <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+}
 
+<hr>

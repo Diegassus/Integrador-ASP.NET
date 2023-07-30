@@ -152,8 +152,10 @@ public class RepositorioContrato{
         List<Contrato> res = new List<Contrato>();
         using ( MySqlConnection connection = new MySqlConnection(ConnectionString))
         {
-            var query = @"SELECT Id, Desde, Hasta, Estado, Mensualidad, InmuebleId, InquilinoId
-            FROM contratos ";
+            var query = @"SELECT contratos.Id, Desde, Hasta, contratos.Estado, Mensualidad, InmuebleId, InquilinoId , inmuebles.Direccion , inquilinos.Nombre , inquilinos.Apellido
+            FROM contratos 
+            JOIN inmuebles ON inmuebles.Id = contratos.InmuebleId 
+            JOIN inquilinos ON inquilinos.Id = contratos.InquilinoId";
             using( var command = new MySqlCommand( query , connection )) 
             {
                 connection.Open();
@@ -169,7 +171,61 @@ public class RepositorioContrato{
                             Estado = reader.GetBoolean(nameof(Contrato.Estado)),
                             Mensualidad = reader.GetDecimal(nameof(Contrato.Mensualidad)),
                             InmuebleId = reader.GetInt32(nameof(Contrato.InmuebleId)),
-                            InquilinoId = reader.GetInt32(nameof(Contrato.InquilinoId))
+                            Bien = new Inmueble{
+                                Id = reader.GetInt32(nameof(Contrato.InmuebleId)),
+                                Direccion = reader.GetString(nameof(Inmueble.Direccion))
+                            },
+                            InquilinoId = reader.GetInt32(nameof(Contrato.InquilinoId)),
+                            Arrendatario = new Inquilino{
+                                Id = reader.GetInt32(nameof(Contrato.InquilinoId)),
+                                Nombre = reader.GetString(nameof(Propietario.Nombre)),
+                                Apellido = reader.GetString(nameof(Propietario.Apellido))
+                            }
+                        };
+                        res.Add(contrato);
+                    }
+                }
+                connection.Close();
+            }
+        }
+        return res ;
+    }
+
+    public List<Contrato> ObtenerVigentes()
+    {
+        List<Contrato> res = new List<Contrato>();
+        using ( MySqlConnection connection = new MySqlConnection(ConnectionString))
+        {
+            var query = @"SELECT contratos.Id, Desde, Hasta, contratos.Estado, Mensualidad, InmuebleId, InquilinoId , inmuebles.Direccion , inquilinos.Nombre , inquilinos.Apellido
+            FROM contratos 
+            JOIN inmuebles ON inmuebles.Id = contratos.InmuebleId 
+            JOIN inquilinos ON inquilinos.Id = contratos.InquilinoId
+            WHERE contratos.Estado = 1";
+            using( var command = new MySqlCommand( query , connection )) 
+            {
+                connection.Open();
+                using( var reader = command.ExecuteReader())
+                {
+                    while(reader.Read())
+                    {
+                        Contrato contrato = new Contrato
+                        {
+                            Id = reader.GetInt32(nameof(Contrato.Id)),
+                            Desde = reader.GetDateTime(nameof(Contrato.Desde)),
+                            Hasta = reader.GetDateTime(nameof(Contrato.Hasta)),
+                            Estado = reader.GetBoolean(nameof(Contrato.Estado)),
+                            Mensualidad = reader.GetDecimal(nameof(Contrato.Mensualidad)),
+                            InmuebleId = reader.GetInt32(nameof(Contrato.InmuebleId)),
+                            Bien = new Inmueble{
+                                Id = reader.GetInt32(nameof(Contrato.InmuebleId)),
+                                Direccion = reader.GetString(nameof(Inmueble.Direccion))
+                            },
+                            InquilinoId = reader.GetInt32(nameof(Contrato.InquilinoId)),
+                            Arrendatario = new Inquilino{
+                                Id = reader.GetInt32(nameof(Contrato.InquilinoId)),
+                                Nombre = reader.GetString(nameof(Propietario.Nombre)),
+                                Apellido = reader.GetString(nameof(Propietario.Apellido))
+                            }
                         };
                         res.Add(contrato);
                     }
@@ -182,15 +238,18 @@ public class RepositorioContrato{
 
     public List<Contrato> ContratosPropiedad(int id){
         List<Contrato> res = new List<Contrato>();
-        using(MySqlConnection connection = new MySqlConnection(ConnectionString))
+        using ( MySqlConnection connection = new MySqlConnection(ConnectionString))
         {
-            var query = @"SELECT Id, Desde, Hasta, Estado, Mensualidad, InmuebleId, InquilinoId
-            FROM contratos WHERE InmuebleId = @id";
-            using(var command = new MySqlCommand(query,connection))
+            var query = @"SELECT contratos.Id, Desde, Hasta, contratos.Estado, Mensualidad, InmuebleId, InquilinoId , inmuebles.Direccion , inquilinos.Nombre , inquilinos.Apellido
+            FROM contratos 
+            JOIN inmuebles ON inmuebles.Id = contratos.InmuebleId 
+            JOIN inquilinos ON inquilinos.Id = contratos.InquilinoId
+            WHERE inmuebles.Id = @id";
+            using( var command = new MySqlCommand( query , connection )) 
             {
-                command.Parameters.AddWithValue("@id",id);
                 connection.Open();
-                using(var reader = command.ExecuteReader())
+                command.Parameters.AddWithValue("@id",id);
+                using( var reader = command.ExecuteReader())
                 {
                     while(reader.Read())
                     {
@@ -202,7 +261,16 @@ public class RepositorioContrato{
                             Estado = reader.GetBoolean(nameof(Contrato.Estado)),
                             Mensualidad = reader.GetDecimal(nameof(Contrato.Mensualidad)),
                             InmuebleId = reader.GetInt32(nameof(Contrato.InmuebleId)),
-                            InquilinoId = reader.GetInt32(nameof(Contrato.InquilinoId))
+                            Bien = new Inmueble{
+                                Id = reader.GetInt32(nameof(Contrato.InmuebleId)),
+                                Direccion = reader.GetString(nameof(Inmueble.Direccion))
+                            },
+                            InquilinoId = reader.GetInt32(nameof(Contrato.InquilinoId)),
+                            Arrendatario = new Inquilino{
+                                Id = reader.GetInt32(nameof(Contrato.InquilinoId)),
+                                Nombre = reader.GetString(nameof(Propietario.Nombre)),
+                                Apellido = reader.GetString(nameof(Propietario.Apellido))
+                            }
                         };
                         res.Add(contrato);
                     }
@@ -213,4 +281,122 @@ public class RepositorioContrato{
         return res ;
     }
 
+    public List<Contrato> FiltrarContratos(Filtro filtro){
+        List<Contrato> res = new List<Contrato>();
+        using ( MySqlConnection connection = new MySqlConnection(ConnectionString))
+        {
+            var query = @"SELECT contratos.Id, Desde, Hasta, contratos.Estado, Mensualidad, InmuebleId, InquilinoId , inmuebles.Direccion , inquilinos.Nombre , inquilinos.Apellido
+            FROM contratos 
+            JOIN inmuebles ON inmuebles.Id = contratos.InmuebleId 
+            JOIN inquilinos ON inquilinos.Id = contratos.InquilinoId
+            WHERE (contratos.Desde <= @hasta)
+            AND (contratos.Hasta >= @desde)
+            AND contratos.Estado = 1";
+            using( var command = new MySqlCommand( query , connection )) 
+            {
+                connection.Open();
+                command.Parameters.AddWithValue("@desde",filtro.Desde);
+                command.Parameters.AddWithValue("@hasta",filtro.Hasta);
+                using( var reader = command.ExecuteReader())
+                {
+                    while(reader.Read())
+                    {
+                        Contrato contrato = new Contrato
+                        {
+                            Id = reader.GetInt32(nameof(Contrato.Id)),
+                            Desde = reader.GetDateTime(nameof(Contrato.Desde)),
+                            Hasta = reader.GetDateTime(nameof(Contrato.Hasta)),
+                            Estado = reader.GetBoolean(nameof(Contrato.Estado)),
+                            Mensualidad = reader.GetDecimal(nameof(Contrato.Mensualidad)),
+                            InmuebleId = reader.GetInt32(nameof(Contrato.InmuebleId)),
+                            Bien = new Inmueble{
+                                Id = reader.GetInt32(nameof(Contrato.InmuebleId)),
+                                Direccion = reader.GetString(nameof(Inmueble.Direccion))
+                            },
+                            InquilinoId = reader.GetInt32(nameof(Contrato.InquilinoId)),
+                            Arrendatario = new Inquilino{
+                                Id = reader.GetInt32(nameof(Contrato.InquilinoId)),
+                                Nombre = reader.GetString(nameof(Propietario.Nombre)),
+                                Apellido = reader.GetString(nameof(Propietario.Apellido))
+                            }
+                        };
+                        res.Add(contrato);
+                    }
+                }
+                connection.Close();
+            }
+        }
+        return res ;
+    }
+
+    public List<Inmueble> InmueblesDisponiblesPorFecha(Filtro filtro){
+        List<Inmueble> res = new List<Inmueble>();
+        using ( MySqlConnection connection = new MySqlConnection(ConnectionString))
+        {
+            var query = @"SELECT Id, Direccion
+            FROM inmuebles
+            WHERE Id NOT IN (
+                SELECT InmuebleId FROM contratos
+                WHERE (Desde <= @hasta) AND (Hasta >= @desde) AND Estado = 1
+            );";
+            using( var command = new MySqlCommand( query , connection )) 
+            {
+                connection.Open();
+                command.Parameters.AddWithValue("@desde",filtro.Desde);
+                command.Parameters.AddWithValue("@hasta",filtro.Hasta);
+                using( var reader = command.ExecuteReader())
+                {
+                    while(reader.Read())
+                    {
+                        Inmueble inmueble = new Inmueble
+                        {
+                            Id = reader.GetInt32(nameof(Inmueble.Id)),
+                            Direccion = reader.GetString(nameof(Inmueble.Direccion))
+                        };
+                        res.Add(inmueble);
+                    }
+                }
+                connection.Close();
+            }
+        }
+        return res ;
+    }
+
+    public bool ValidarFecha(Contrato contrato){
+        bool res = false;
+        using ( MySqlConnection connection = new MySqlConnection(ConnectionString))
+        {
+            var query = @"SELECT Id FROM contratos WHERE (Desde <= @hasta) AND (Hasta >= @desde) AND Estado = 1 AND InmuebleId = @id";
+            using( var command = new MySqlCommand( query , connection ))
+            {
+                connection.Open();
+                command.Parameters.AddWithValue("@desde",contrato.Desde);
+                command.Parameters.AddWithValue("@hasta",contrato.Hasta);
+                command.Parameters.AddWithValue("@id",contrato.InmuebleId);
+                using( var reader = command.ExecuteReader())
+                {
+                    if(!reader.Read())
+                    {
+                        res = true;
+                    }
+                }
+                connection.Close();
+            }
+        }
+        return res ;
+    }
+
+    public void Cancelar(Contrato contrato){
+        using ( MySqlConnection connection = new MySqlConnection(ConnectionString))
+        {
+            var query = @"UPDATE contratos SET Estado = 0 WHERE Id = @id";
+            using( var command = new MySqlCommand( query , connection ))
+            {
+                connection.Open();
+                command.Parameters.AddWithValue("@id",contrato.Id);
+                command.ExecuteNonQuery();
+                connection.Close();
+            }
+        }
+    }
 }

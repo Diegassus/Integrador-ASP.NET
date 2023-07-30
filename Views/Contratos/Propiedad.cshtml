@@ -1,12 +1,10 @@
-@model IEnumerable<Inmobiliaria.Models.Inmueble>
+@model IEnumerable<Inmobiliaria.Models.Contrato>
 
 @{
-    ViewData["Title"] = "Inmuebles";
-    IDictionary<int,string> usos = (IDictionary<int,string>) ViewBag.Usos;
-    IDictionary<int,string> tipos = (IDictionary<int,string>) ViewBag.Tipos;
+    ViewData["Title"] = "Contratos";
 }
 
-<h3 style="display: inline-block;">Inmuebles</h3>
+<h3 style="display: inline-block;">Contratos</h3>
 
 <a asp-action="Create" style="display: inline-block; margin-left:10px;">
     <div style="display: flex;">
@@ -17,11 +15,11 @@
     </div>
 </a>
 
-<a asp-action="Disponibles" style="display: inline-block; margin-left:10px;">
+<a asp-action="Vigentes" style="display: inline-block; margin-left:10px;">
     <div style="display: flex;">
         <button class="btn-info" style="padding: 3px 9px; border:none; border-radius:5px 0px 0px 5px; background-color:#5c636a;"><i class="fa-solid fa-check" style="color: #ffffff;"></i></button>
     <button class="btn-warning" style="padding: 3px; border:none; border-radius:0px 5px 5px 0px; margin:0;">
-        <p style="display: inline-block; padding:0px 4px 0px 3px; margin:0;">Disponibles</p>
+        <p style="display: inline-block; padding:0px 4px 0px 3px; margin:0;">Vigentes</p>
     </button>
     </div>
 </a>
@@ -42,27 +40,27 @@
 
 <div class="container mt-3">
     <div style="width: 100%; margin:auto; background-color:#fff; border-radius: 15px; padding:7px 20px; border:1px solid #5c636a;">
-        <div class="thead row" style="border-bottom: 1px solid #000f; padding: 0px 0px 5px 0px">
+        <div class="thead row" style="border-bottom: 1px solid #000f; padding: 0px 0px 5px 0px; display: flex; justify-content: center;">
             <div class="col-md-1">
                 @Html.DisplayNameFor(model => model.Id)
             </div>
             <div class="col-md-1">
-                @Html.DisplayNameFor(model => model.Uso)
+                @Html.DisplayNameFor(model => model.Desde)
             </div>
             <div class="col-md-1" style="display: flex; justify-content:center;">
-                @Html.DisplayNameFor(model => model.Tipo)
+                @Html.DisplayNameFor(model => model.Hasta)
             </div>
             <div class="col-md-1">
-                @Html.DisplayNameFor(model => model.Disponible)
-            </div>
-            <div class="col-md-2">
-                @Html.DisplayNameFor(model => model.Direccion)
+                @Html.DisplayNameFor(model => model.Estado)
             </div>
             <div class="col-md-1">
-                @Html.DisplayNameFor(model => model.Precio)
+                @Html.DisplayNameFor(model => model.Mensualidad)
+            </div>
+            <div class="col-md-2" style="text-align: center;">
+                @Html.DisplayNameFor(model => model.InmuebleId)
             </div>
             <div class="col-md-2">
-                @Html.DisplayNameFor(model => model.Duenio)
+                @Html.DisplayNameFor(model => model.InquilinoId)
             </div>
             <div class="col-md-2" style="display: flex; justify-content:center;">
                 <p style="display: inline-block; margin:0;">Operaciones</p>
@@ -77,47 +75,48 @@
                     @Html.DisplayFor(modelItem => item.Id)
                 </div>
                 <div class="col-md-1">
-                    @usos[(int)item.Uso]
+                    @Html.DisplayFor(modelItem => item.Desde.Day)/@Html.DisplayFor(modelItem => item.Desde.Month)/@Html.DisplayFor(modelItem => item.Desde.Year)
                 </div>
                 <div class="col-md-1" style="display: flex; justify-content:center; align-content:center;">
-                    @tipos[(int)item.Tipo]
+                    @Html.DisplayFor(modelItem => item.Hasta.Day)/@Html.DisplayFor(modelItem => item.Hasta.Month)/@Html.DisplayFor(modelItem => item.Hasta.Year)
                 </div>
                 <div class="col-md-1" style="display: flex; justify-content:center; align-content:center;">
-                @if((bool)item.Disponible == true){
-                     <i class="fa-solid fa-circle" style="color: #00ff00;"></i>
+                @if(item.Estado){
+                    <p>Vigente</p>
                 }else{
-                    <i class="fa-solid fa-circle" style="color: #ff0000;"></i>
+                    <p>Vencido</p>
                 }
-            </div>
-            <div class="col-md-2">
-                @Html.DisplayFor(modelItem => item.Direccion)
-            </div>
-            <div class="col-md-1">
-                @Html.DisplayFor(modelItem => item.Precio)
-            </div>
-            <div class="col-md-2">
-                @Html.DisplayFor(modelItem => item.Duenio.Apellido)
-                @Html.DisplayFor(modelItem => item.Duenio.Nombre)
-            </div>
-                <div class="col-md-2" style="display: flex; justify-content:center;">
-                    <div style="display: flex; justify-content:space-around; width:100%;">
-                        <a asp-action="Edit" asp-route-id="@item.Id">
-                            <i class="fa-solid fa-user-pen" style="color: #25CED1;"></i>
-                        </a>
-                        <a asp-action="Details" asp-route-id="@item.Id">
-                            <i class="fa-solid fa-circle-info" ></i>
-                        </a>
-                        @if(User.IsInRole("Administrador")){
-                            <a asp-action="Delete" asp-route-id="@item.Id">
-                                <i class="fa-solid fa-trash" style="color: #EA526F;"></i>
+                </div>
+                <div class="col-md-1">
+                    $@Html.DisplayFor(modelItem => item.Mensualidad)
+                </div>
+                <div class="col-md-2" style="text-align: center;">
+                    @Html.DisplayFor(modelItem => item.Bien.Id) - @Html.DisplayFor(modelItem => item.Bien.Direccion)
+                </div>
+                <div class="col-md-2">
+                    @Html.DisplayFor(modelItem => item.Arrendatario.Apellido)
+                    @Html.DisplayFor(modelItem => item.Arrendatario.Nombre)
+                </div>
+                    <div class="col-md-2" style="display: flex; justify-content:center;">
+                        <div style="display: flex; justify-content:space-around; width:100%;">
+                            <a asp-action="Edit" asp-route-id="@item.Id">
+                                <i class="fa-solid fa-user-pen" style="color: #25CED1;"></i>
                             </a>
-                        }
+                            <a asp-action="Details" asp-route-id="@item.Id">
+                                <i class="fa-solid fa-circle-info" ></i>
+                            </a>
+                            @if(User.IsInRole("Administrador")){
+                                <a asp-action="Delete" asp-route-id="@item.Id">
+                                    <i class="fa-solid fa-trash" style="color: #EA526F;"></i>
+                                </a>
+                            }
                     </div>
                 </div>
                 <div class="col-md-1" style="display: flex; justify-content:center;">
-                    <a asp-controller="Contratos" asp-action="Propiedad" asp-route-id="@item.Id" class="btn btn-success" style="padding:2px 7px;">Contratos</a>
+                    <a asp-controller="Pago" asp-action="Index" asp-route-id="@item.Id" class="btn btn-success" style="padding:2px 7px;">Pagos</a>
                 </div>
             </div>
         }
     </div>
 </div>
+

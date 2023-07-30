@@ -15,14 +15,37 @@
     </div>
 </a>
 
-<a asp-action="Vigentes" style="display: inline-block; margin-left:10px;">
+<a asp-action="Index" style="display: inline-block; margin-left:10px;">
     <div style="display: flex;">
         <button class="btn-info" style="padding: 3px 9px; border:none; border-radius:5px 0px 0px 5px; background-color:#5c636a;"><i class="fa-solid fa-check" style="color: #ffffff;"></i></button>
     <button class="btn-warning" style="padding: 3px; border:none; border-radius:0px 5px 5px 0px; margin:0;">
-        <p style="display: inline-block; padding:0px 4px 0px 3px; margin:0;">Vigentes</p>
+        <p style="display: inline-block; padding:0px 4px 0px 3px; margin:0;">Ver Todos</p>
     </button>
     </div>
 </a>
+
+<form asp-action="Filtro" style="display: inline-block; margin-left:10px;">
+    <div style="display: inline-block; margin-left:10px;">
+        <div style="display: flex;">
+            <div style="padding: 3px 9px; border:none; border-radius:5px 0px 0px 5px; background-color:#5c636a;">
+                <p style="margin: 0; padding:0; color:#fff;">Desde</p>
+            </div>
+            <input type="datetime-local" name="Desde" id="desde">
+        </div>
+    </div>
+
+    <div style="display: inline-block; margin-left:10px;">
+        <div style="display: flex;">
+            <div style="padding: 3px 9px; border:none; border-radius:5px 0px 0px 5px; background-color:#5c636a;">
+                <p style="margin: 0; padding:0; color:#fff;">Hasta</p>
+            </div>
+            <input type="datetime-local" name="Hasta" id="hasta">
+        </div>
+    </div>
+
+    <input type="submit" value="Buscar" class="btn btn-info" />
+
+</form>
 
 @if(ViewBag.Exito == 1){
     <div class="alert alert-info alert-dismissible" role="alert">
@@ -57,10 +80,10 @@
                 @Html.DisplayNameFor(model => model.Mensualidad)
             </div>
             <div class="col-md-2" style="text-align: center;">
-                @Html.DisplayNameFor(model => model.Bien)
+                @Html.DisplayNameFor(model => model.InmuebleId)
             </div>
             <div class="col-md-2">
-                @Html.DisplayNameFor(model => model.Arrendatario)
+                @Html.DisplayNameFor(model => model.InquilinoId)
             </div>
             <div class="col-md-2" style="display: flex; justify-content:center;">
                 <p style="display: inline-block; margin:0;">Operaciones</p>
@@ -113,10 +136,9 @@
                     </div>
                 </div>
                 <div class="col-md-1" style="display: flex; justify-content:center;">
-                    <a asp-controller="Pago" asp-action="Index" asp-route-id="@item.Id" class="btn btn-success" style="padding:2px 7px;">Pagos</a>
+                    <a asp-controller="Listados" asp-action="Contratos" asp-route-id="@item.Id" class="btn btn-success" style="padding:2px 7px;">Contratos</a>
                 </div>
             </div>
         }
     </div>
 </div>
-

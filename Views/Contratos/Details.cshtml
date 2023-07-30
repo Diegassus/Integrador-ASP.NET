@@ -1,66 +1,50 @@
 @model Inmobiliaria.Models.Contrato
 
 @{
-    ViewData["Title"] = "Informacion";
+    ViewData["Title"] = "Contrato";
+}
+<div>
+    <a asp-action="Index" style="text-decoration: none; padding-right:8px; border-right:1px solid #000 ; margin-right: 8px;"><i class="fa-solid fa-arrow-left"></i> Volver a la lista</a>
+    <a asp-action="Edit" asp-route-id="@Model.Id" style="text-decoration: none; padding-right:8px; border-right:1px solid #000 ; margin-right: 8px;"><i class="fa-solid fa-user-pen" style="color: #25CED1;"></i> Editar</a>
+    <a asp-action="Renovar" asp-route-id="@Model.Id" style="text-decoration: none;" class="btn btn-warning">Renovar contrato por otro año</a>
+    <a asp-action="Cancelar" asp-route-id="@Model.Id" style="text-decoration: none;" class="btn btn-danger">Terminar contrato</a>
+</div>
+
+<h3>Contrato</h3>
+
+@if(ViewBag.Exito == 1){
+    <div class="alert alert-info alert-dismissible" role="alert">
+       <div>@ViewBag.Mensaje</div>
+       <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+}else if(ViewBag.Exito == 0){
+    <div class="alert alert-danger alert-dismissible" role="alert">
+       <div>@ViewBag.Mensaje</div>
+       <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
 }
 
-<h1>Details</h1>
+<span>Inquilino: </span>
+<a asp-controller="Inquilino" asp-action="Details" asp-route-id="@Model.InquilinoId">@Html.DisplayFor(model => model.Arrendatario.Nombre) @Html.DisplayFor(model => model.Arrendatario.Apellido)</a> &nbsp;
+<span>@Html.DisplayFor(model => model.Arrendatario.Correo)</span>&nbsp;
+<span>Telefono: @Html.DisplayFor(model => model.Arrendatario.Telefono)</span>
 
+<a asp-controller="Inmueble" asp-action="Details" asp-route-id="@Model.InmuebleId">Ver Inmueble</a> &nbsp;
 <div>
-    <h4>Contrato</h4>
-    <hr />
-    <dl class="row">
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Id)
-        </dt>
-        <dd class = "col-sm-2">
-            @Html.DisplayFor(model => model.Id)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Desde)
-        </dt>
-        <dd class = "col-sm-2">
-            @Html.DisplayFor(model => model.Desde)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Hasta)
-        </dt>
-        <dd class = "col-sm-2">
-            @Html.DisplayFor(model => model.Hasta)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Estado)
-        </dt>
-        <dd class = "col-sm-2">
-            @if(Model.Estado){
-                <p>Vigente</p>
-            }else{
-                <p>Vencido</p>
-            }
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Mensualidad)
-        </dt>
-        <dd class = "col-sm-2">
-            @Html.DisplayFor(model => model.Mensualidad)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.InmuebleId)
-        </dt>
-        <dd class = "col-sm-2">
-            
-            <p>@Html.DisplayFor(model => model.InmuebleId) | @Html.DisplayFor(model => model.Bien.Direccion)</p>
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.InquilinoId)
-        </dt>
-        <dd class = "col-sm-2">
-            <p>@Model.Arrendatario.ToString()</p>
-        </dd>
-    </dl>
+    
+<div class="container">
+    <hr>
+    <div class="row">
+        <h5 class="col-md-1">@Html.DisplayNameFor(model => model.Id)</h5>
+        <p class="col-md-1">@Html.DisplayFor(model => model.Id)</p>
+        <h5 class="col-md-1">@Html.DisplayNameFor(model => model.Desde)</h5>
+        <p class="col-md-2">@Html.DisplayFor(model => model.Desde)</p>
+        <h5 class="col-md-1">@Html.DisplayNameFor(model => model.Hasta)</h5>
+        <p class="col-md-2">@Html.DisplayFor(model => model.Hasta)</p>
+        <h5 class="col-md-2">@Html.DisplayNameFor(model => model.Mensualidad)</h5>
+        <p class="col-md-1">@Html.DisplayFor(model => model.Mensualidad)</p>
+    </div>
 </div>
 <div>
-    <a asp-action="Edit" asp-route-id="@Model.Id"><i class="fa-solid fa-pen-to-square" style="color: #25CED1;"></i></a>&nbsp;|
-    <a asp-action="Index">Volver a la lista</a> |
-    @Html.ActionLink("Pagos asociados","Index","Pago",new {id = Model.Id})
+    @Html.ActionLink("Ver pagos asociados","Index","Pago",new {id = Model.Id})
 </div>
